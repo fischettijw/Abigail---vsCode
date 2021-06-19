@@ -1,0 +1,15 @@
+{
+    "python.pythonPath": "C:\\Users\\fisch\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "python.linting.pylintEnabled": false,
+    "python.languageServer": "Pylance",
+    "python.linting.enabled": false,
+  
+    // "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[python]": {
+      "editor.defaultFormatter": null
+    },
+    "python.formatting.blackArgs": ["--line-length", "120"],
+    "python.formatting.provider": "autopep8",
+    "python.linting.flake8Enabled": false,
+    "python.linting.banditEnabled": false
+  }
