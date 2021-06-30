@@ -16,8 +16,8 @@ def create_circle_center_ul(self, x, y, r, **kwargs):
                             fill=kwargs.get('fill'))
 
 
-def rgb_to_hex_color(rgb):
-    r, g, b = rgb  # translates an rgb tuple of int to a tkinter friendly color code
+def rgb_to_hex(self, r, g, b):
+    # r, g, b = rgb  # translates an rgb tuple of int to a tkinter friendly color code
     return f'#{r:02x}{g:02x}{b:02x}'
 
 
@@ -25,3 +25,4 @@ def rgb_to_hex_color(rgb):
 # Canvas.create_circle_center_ul = create_circle_center_ul
 tkinter.Canvas.create_circle_center = create_circle_center
 tkinter.Canvas.create_circle_center_ul = create_circle_center_ul
+tkinter.Canvas.rgb_to_tkColor = rgb_to_hex
