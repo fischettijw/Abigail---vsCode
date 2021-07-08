@@ -1,24 +1,16 @@
+# Import the required libraries
+from tkinter import *
 
-# import package
-import turtle
+# Create an instance of tkinter frame
+win = Tk()
 
+# Set the geometry of frame
+win.geometry("650x250")
 
-# to check
-print(turtle.isdown())
-turtle.forward(10)
+# Get the current screen width and height
+screen_width = win.winfo_screenwidth()
+screen_height = win.winfo_screenheight()
 
-# up the turtle
-turtle.up()
-
-# to check
-print(turtle.isdown())
-
-# up the turtle
-turtle.down()
-turtle.forward(10)
-
-# to check
-print(turtle.isdown())
-
-
-turtle.done()
+# Print the screen size
+print("Screen width:", screen_width)
+print("Screen height:", screen_height)

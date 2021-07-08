@@ -2,8 +2,46 @@
 
 
 import turtle
-import os
-os.system('cls')
+import keyboard
+global t, s, drag_segments, arrow_movement
+
+t = turtle.Turtle()
+s = turtle.Screen()
+
+drag_segments = 1
+arrow_movement = 10
+
+
+def square(side):
+    if side == None:
+        side = s.numinput(
+            'Square', 'What size SQUARE would you like?', default=100)
+    for n in range(4):
+        t.forward(side)
+        t.right(90)
+
+
+def hide():
+    t.hideturtle()
+
+
+def show():
+    t.showturtle()
+
+
+def clear():
+    s.clear()
+
+
+def bkground():
+    bColor = s.textinput('Change Background Color',
+                         'What color would you like?')
+    s.bgcolor(bColor)
+
+
+def write_text():
+    txt = s.textinput('Input Text', 'What TEXT would you like?')
+    t.write(txt, align='center', font=('Arial', 30, 'bold'))
 
 
 def move_up(event):
@@ -64,43 +102,3 @@ def dragging(x, y):  # These parameters will be the mouse position
     t.goto(x, y)
     drag_segments += 1
     t.ondrag(dragging)
-
-
-t = turtle.Turtle()
-s = turtle.Screen()
-
-drag_segments = 1
-arrow_movement = 10
-
-s.setup(width=1200, height=800, startx=0, starty=None)
-s.title("Abigail's Drawing Program")
-s.bgcolor('yellow')
-s.mode('logo')  # up = 0, right = 90, down = 180, left = 270
-
-t.shape('turtle')
-t.pensize(4)
-t.speed('fastest')
-t.pencolor("red")
-
-
-#                 *****  EVENTS    *****
-
-t.ondrag(dragging)
-# t.onclick(turtle_click)
-
-s.onclick(left_mouse_click, btn=1)      # left buttom
-s.onclick(middle_mouse_click, btn=2)    # Middle buttom
-s.onclick(right_mouse_click, btn=3)     # Right buttom
-
-s.listen()  # listen for KEY Events
-s.getcanvas().bind("<Up>", move_up)
-s.getcanvas().bind("<Right>", move_right)
-s.getcanvas().bind("<Down>", move_down)
-s.getcanvas().bind("<Left>", move_left)
-# s.onkey(move_up, "Up")
-# s.onkey(move_right, "Right")
-# s.onkey(move_down, "Down")
-# s.onkey(move_left, "Left")
-
-
-s.mainloop()
