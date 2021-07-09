@@ -1,9 +1,11 @@
-# https://stackoverflow.com/questions/44634947/how-to-set-a-turtle-to-a-turtle-screen/44639041#44639041
-
+# Turtle Commands  https://docs.python.org/3.3/library/turtle.html?highlight=turtle#overview-of-available-turtle-and-screen-methods
+# Turtle Graphics Docs  https://docs.python.org/3.3/library/turtle.html?highlight=turtle
 
 import turtle
 import os
 os.system('cls')
+
+# region functions
 
 
 def move_up(event):
@@ -64,6 +66,7 @@ def dragging(x, y):  # These parameters will be the mouse position
     t.goto(x, y)
     drag_segments += 1
     t.ondrag(dragging)
+# endregion functions
 
 
 t = turtle.Turtle()
@@ -82,6 +85,7 @@ t.pensize(4)
 t.speed('fastest')
 t.pencolor("red")
 
+# t.circle(-100)
 
 #                 *****  EVENTS    *****
 

@@ -13,7 +13,7 @@ os.system('cls')
 # arrow_movement = 10
 
 s.setup(width=1200, height=800, startx=None, starty=None)
-s.title("Abigail's Drawing Program")
+s.title("Turtle Graphics Drawing Program")
 s.bgcolor('yellow')
 s.mode('logo')  # up = 0, right = 90, down = 180, left = 270
 

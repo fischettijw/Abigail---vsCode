@@ -32,6 +32,12 @@ def draw_color_squares():
     t.showturtle()
 
 
+def change_bgcolor():
+    bgclr = colorchooser.askcolor(title="Choose color")[1]
+    s.bgcolor(bgclr)
+    btn_bgcolor.config(bg=bgclr)
+
+
 win = Tk()
 win.geometry(f"1200x800+360+140")
 win.title("Abigail's Drawing Turtle")
@@ -43,7 +49,6 @@ canvas.configure(width=1200-200, height=800)
 canvas.pack(side=LEFT, padx=0, pady=0)
 
 s = TurtleScreen(canvas)
-s.bgcolor(colorchooser.askcolor(title="Choose color")[1])
 s.mode('logo')
 
 t = turtle.RawTurtle(s)
@@ -56,7 +61,7 @@ t.showturtle()
 
 txt_square_size = tk.Entry(win, font=('arial', 14), bg='light yellow',
                            justify='center', relief='solid')
-txt_square_size.pack(fill=tk.BOTH, padx=2, pady=2)
+txt_square_size.pack(fill=BOTH, padx=2, pady=2)
 txt_square_size.insert(0, 20)
 
 
@@ -79,6 +84,13 @@ txt_bgcolor = tk.Entry(win, font=('arial', 18), bg='#AFEEEE',
                        justify='center', relief='solid', width=5)
 txt_bgcolor.pack(side=TOP, anchor=NE, padx=2, pady=2)
 txt_bgcolor.insert(0, 'BgClr')
+
+btn_bgcolor = tk.Button(win, text='BgColor',
+                        font=('arial', 14, 'normal'),
+                        bg='light yellow',
+                        command=change_bgcolor)
+btn_bgcolor.pack(fill=X, expand=1)
+# btn_bgcolor.pack(side=LEFT,anchor=NW, padx=2, pady=2)
 
 
 win.mainloop()
