@@ -7,20 +7,60 @@ os.system('cls')
 # region functions
 
 
+def initialize_screen_and_turtle():
+    s.bgcolor('purple')
+    s.mode('logo')
+    t.reset()
+    t.shape('turtle')
+    t.setheading(90)
+    t.speed(0)
+    t.pensize(3)
+    t.pencolor('red')
+    btn_pencolor.config(bg='red')
+    t.showturtle()
+
+
+def test():
+    square_center.set(True)
+    t.hideturtle()
+    t.pensize(5)
+    for n in range(9):
+        square(500)
+        t.right(10)
+
+    t.hideturtle()
+    t.pensize(4)
+    for n in range(9):
+        square(400)
+        t.right(10)
+
+    t.pensize(3)
+    for n in range(9):
+        square(300)
+        t.right(10)
+
+    square_center.set(False)
+    t.pensize(2)
+    for n in range(27):
+        square(150)
+        t.right(10)
+
+    t.showturtle()
+
+
 def square(size):
-    t.penup()
     x_orig = t.position()[0]
     y_orig = t.position()[1]
     heading_orig = t.heading()
 
     if txt_square_size.get().isnumeric():
         size = int(txt_square_size.get())
-
-    if not size:
+    elif not size:
         size = s.numinput(
             'Square', 'What size SQUARE would you like?', default=100)
 
     if square_center.get():
+        t.penup()
         t.forward(-size/2)
         t.left(-90)
         t.forward(-size/2)
@@ -42,7 +82,6 @@ def pen_color():
 
 
 # endregion functions
-
 win = tk.Tk()
 win.geometry(f"1650x915+150+50")
 win.title("Drawing Turtle")
@@ -76,13 +115,13 @@ btn_pencolor = tk.Button(frm_buttons, text="Pen Color",
                          bg='yellow', width=16,
                          command=pen_color)
 btn_pencolor.grid(row=2, column=0, pady=2, padx=1)
-btn_button03 = tk.Button(frm_buttons, text="Button 3",
+btn_clear = tk.Button(frm_buttons, text="Initialize",
+                      font=('arial', 14, 'normal'),
+                      bg='white', width=16, command=initialize_screen_and_turtle)
+btn_clear.grid(row=3, column=0, pady=2, padx=1)
+btn_button04 = tk.Button(frm_buttons, text="TEST",
                          font=('arial', 14, 'normal'),
-                         bg='cyan', width=16)
-btn_button03.grid(row=3, column=0, pady=2, padx=1)
-btn_button04 = tk.Button(frm_buttons, text="Button 4",
-                         font=('arial', 14, 'normal'),
-                         bg='pink', width=16)
+                         bg='pink', width=16, command=test)
 btn_button04.grid(row=4, column=0, pady=2, padx=1)
 
 
@@ -90,51 +129,9 @@ frm_canvas.grid(row=0, column=0)
 frm_buttons.grid(row=0, column=1)
 
 s = turtle.TurtleScreen(canvas)
-s.bgcolor('purple')
-s.mode('logo')
-
 t = turtle.RawTurtle(s)
-t.shape('turtle')
-t.setheading(90)
-t.speed(0)
-t.pensize(3)
-t.pencolor('red')
-btn_pencolor.config(bg='red')
-t.showturtle()
 
-t.right(289)
-
-t.hideturtle()
-t.pensize(5)
-
-square_center.set(True)
-for n in range(9):
-    square(500)
-    t.right(10)
-
-t.hideturtle()
-t.pensize(4)
-for n in range(9):
-    square(400)
-    t.right(10)
-
-t.pensize(3)
-for n in range(9):
-    square(300)
-    t.right(10)
-
-square_center.set(False)
-t.pensize(2)
-for n in range(36):
-    square(150)
-    t.right(10)
-
-# t.pensize(1)
-# for n in range(18):
-#     square(170)
-#     t.right(10)
-
-t.showturtle()
+initialize_screen_and_turtle()
 
 
 win.mainloop()
