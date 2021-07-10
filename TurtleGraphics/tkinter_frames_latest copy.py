@@ -83,50 +83,49 @@ def pen_color():
 
 # endregion functions
 win = tk.Tk()
-win.geometry(f"1650x915+150+50")
+win.geometry(f"1710x915+150+50")
 win.title("Drawing Turtle")
 win.resizable(False, False)
 
 frm_canvas = tk.Frame(win, borderwidth=5, relief='sunken')
-canvas = tk.Canvas(frm_canvas, width=1650-205,  # width=1650-195,
+frm_buttons = tk.Frame(win, borderwidth=5, relief='sunken',
+                       background='light gray')
+canvas = tk.Canvas(frm_canvas, width=1710-225,
                    height=915-15, bg='pink')
 canvas.grid(row=0, column=0)
 
-frm_buttons = tk.Frame(win)
+frm_buttons.option_add("*font", 'arial 14 normal')
+
 btn_Square = tk.Button(frm_buttons, text="Square",
-                       font=('arial', 14, 'normal'),
-                       bg='green2', width=10, borderwidth=2,
+                       bg='#aaffaa', width=10, borderwidth=2,
                        command=lambda: square(None))
-btn_Square.grid(row=0, column=0, pady=2, padx=1, sticky='w')
+btn_Square.grid(row=0, column=0, pady=2, padx=(3, 1), sticky=tk.W)
 square_center = tk.BooleanVar()
 ckb_Square_center = tk.Checkbutton(frm_buttons, text='center',
-                                   variable=square_center)
-ckb_Square_center.grid(row=0, column=0, pady=2, padx=1, sticky='e')
+                                   font=('arial', 8, 'normal'),
+                                   variable=square_center,
+                                   background='light gray')
+ckb_Square_center.grid(row=0, column=0, pady=2, padx=1, sticky=tk.E)
 
-txt_square_size = tk.Entry(frm_buttons,
-                           font=('arial', 14, 'normal'), bd=5,
-                           bg='green2', width=16, justify='center')
+txt_square_size = tk.Entry(frm_buttons, bd=5, bg='#aaffaa',
+                           width=16, justify=tk.CENTER)
 txt_square_size.grid(row=1, column=0, pady=(2, 10), padx=1)
 # txt_square_size.insert(0, 20)
 
-
 btn_pencolor = tk.Button(frm_buttons, text="Pen Color",
-                         font=('arial', 14, 'normal'),
                          bg='yellow', width=16,
                          command=pen_color)
 btn_pencolor.grid(row=2, column=0, pady=2, padx=1)
 btn_clear = tk.Button(frm_buttons, text="Initialize",
-                      font=('arial', 14, 'normal'),
                       bg='white', width=16, command=initialize_screen_and_turtle)
 btn_clear.grid(row=3, column=0, pady=2, padx=1)
-btn_button04 = tk.Button(frm_buttons, text="TEST",
-                         font=('arial', 14, 'normal'),
-                         bg='pink', width=16, command=test)
-btn_button04.grid(row=4, column=0, pady=2, padx=1)
+btn_test = tk.Button(frm_buttons, text="TEST",
+                     bg='#ffaaaa', width=16, command=test)
+btn_test.grid(row=4, column=0, pady=2, padx=1, sticky=tk.W)
 
 
-frm_canvas.grid(row=0, column=0)
-frm_buttons.grid(row=0, column=1)
+frm_canvas.grid(row=0, column=0, padx=2, pady=2, sticky=tk.NS)
+frm_buttons.grid(row=0, column=1, padx=2, pady=2, sticky=tk.NSEW)
 
 s = turtle.TurtleScreen(canvas)
 t = turtle.RawTurtle(s)
