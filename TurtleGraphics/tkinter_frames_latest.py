@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import colorchooser
 import turtle
 import os
@@ -48,6 +49,40 @@ def test():
     t.showturtle()
 
 
+def circle():
+    t.pendown()
+    t.circle(200)
+
+
+def triangle():
+    t.pendown()
+    for n in range(3):
+        t.forward(100)
+        t.right(120)
+
+
+def hexagon():
+    t.pendown()
+    for n in range(6):
+        t.forward(100)
+        t.right(60)
+
+
+# https://jaxenter.com/implement-switch-case-statement-python-138315.html
+def cbx_changed(event):
+    cbx_choice = event.widget.get()
+    switcher = {
+        'circle': circle,
+        'triangle': triangle,
+        'square': lambda: square(None),
+        'hexagon': hexagon
+    }
+    # func = switcher.get(cbx_choice,
+    #                     lambda: print(func=switcher[cbx_choice]))
+    func = switcher[cbx_choice]
+    func()
+
+
 def square(size):
     x_orig = t.position()[0]
     y_orig = t.position()[1]
@@ -83,54 +118,61 @@ def pen_color():
 
 # endregion functions
 win = tk.Tk()
-win.geometry(f"1710x915+150+50")
+win.geometry(f"1780x915+70+50")
 win.title("Drawing Turtle")
 win.resizable(False, False)
 
+# region GUI
 frm_canvas = tk.Frame(win, borderwidth=5, relief='sunken')
 frm_buttons = tk.Frame(win, borderwidth=5, relief='sunken',
                        background='light gray')
-frm_buttons.option_add("*font", 'arial 14 normal')
-
-canvas = tk.Canvas(frm_canvas, width=1710-225,
+canvas = tk.Canvas(frm_canvas, width=1780-225,
                    height=915-15, bg='pink')
 canvas.grid(row=0, column=0)
 
+frm_buttons.option_add("*font", 'arial 14 normal')
+
 btn_Square = tk.Button(frm_buttons, text="Square",
-                       #    font=('arial', 14, 'normal'),
-                       bg='green2', width=10, borderwidth=2,
+                       bg='#aaffaa', width=8, borderwidth=2,
                        command=lambda: square(None))
-btn_Square.grid(row=0, column=0, pady=2, padx=1, sticky=tk.W)
+btn_Square.grid(row=0, column=0, pady=2, padx=(8, 0), sticky=tk.W)
 square_center = tk.BooleanVar()
 ckb_Square_center = tk.Checkbutton(frm_buttons, text='center',
-                                   font=('arial', 8, 'normal'),
+                                   font=('arial', 12, 'normal'),
                                    variable=square_center,
                                    background='light gray')
-ckb_Square_center.grid(row=0, column=0, pady=2, padx=1, sticky=tk.E)
+ckb_Square_center.grid(row=0, column=0, pady=2, padx=16, sticky=tk.E)
 
-txt_square_size = tk.Entry(frm_buttons,
-                           font=('arial', 14, 'normal'), bd=5,
-                           bg='green2', width=16, justify=tk.CENTER)
+txt_square_size = tk.Entry(frm_buttons, bd=5, bg='#aaffaa',
+                           width=16, justify=tk.CENTER)
 txt_square_size.grid(row=1, column=0, pady=(2, 10), padx=1)
 # txt_square_size.insert(0, 20)
 
 btn_pencolor = tk.Button(frm_buttons, text="Pen Color",
-                         font=('arial', 14, 'normal'),
                          bg='yellow', width=16,
                          command=pen_color)
 btn_pencolor.grid(row=2, column=0, pady=2, padx=1)
 btn_clear = tk.Button(frm_buttons, text="Initialize",
-                      font=('arial', 14, 'normal'),
                       bg='white', width=16, command=initialize_screen_and_turtle)
 btn_clear.grid(row=3, column=0, pady=2, padx=1)
-btn_button04 = tk.Button(frm_buttons, text="TEST",
-                         font=('arial', 14, 'normal'),
-                         bg='pink', width=16, command=test)
-btn_button04.grid(row=4, column=0, pady=2, padx=1)
+btn_test = tk.Button(frm_buttons, text="TEST",
+                     bg='#ffaaaa', width=16, command=test)
+btn_test.grid(row=4, column=0, pady=2, padx=8, sticky=tk.W)
+
+cbx_var = tk.StringVar()
+cbx_options = ['circle', 'triangle', 'square', 'hexagon']
+
+cbx_functions = ttk.Combobox(frm_buttons, text="Select Function",
+                             width=15, state='readonly',
+                             textvariable=cbx_var, values=cbx_options)
+cbx_functions.grid(row=5, column=0, pady=2, padx=8,  sticky=tk.W)
+cbx_functions.bind('<<ComboboxSelected>>', cbx_changed)
 
 
 frm_canvas.grid(row=0, column=0, padx=2, pady=2, sticky=tk.NS)
 frm_buttons.grid(row=0, column=1, padx=2, pady=2, sticky=tk.NSEW)
+
+# endregion GUI
 
 s = turtle.TurtleScreen(canvas)
 t = turtle.RawTurtle(s)

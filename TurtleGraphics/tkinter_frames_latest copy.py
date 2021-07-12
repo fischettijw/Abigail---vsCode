@@ -1,3 +1,4 @@
+from math import tan, radians
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
@@ -49,30 +50,56 @@ def test():
     t.showturtle()
 
 
-def circle():
-    t.pendown()
-    t.circle(200)
+def pen_size(sz):
+    t.pensize(sz)
 
 
-def triangle():
+def apothem(num_of_sides, len_of_side):
+    return (len_of_side/2)/tan(radians(360/(2*num_of_sides)))
+
+
+def circle(size=100):
     t.pendown()
+    size = s.numinput(
+        'Circle', 'What size CIRCLE would you like?', default=size)
+    t.circle(size)
+
+
+def triangle(size=100):
+    t.pendown()
+    size = s.numinput(
+        'Triangle', 'What size TRIANGLE would you like?', default=size)
     for n in range(3):
-        t.forward(100)
+        t.forward(size)
         t.right(120)
 
 
-def hexagon():
+def hexagon(size=100):
     t.pendown()
+    size = s.numinput(
+        'Hexagon', 'What size HEXAGON would you like?', default=size)
     for n in range(6):
-        t.forward(100)
+        t.forward(size)
         t.right(60)
+
+
+def poly(num=6, size=100, ask=False):
+    if ask:
+        num = int(s.numinput(
+            'Polygon', 'How many SIDES would you like?', default=num))
+        size = int(s.numinput(
+            'Polygon', 'What LENGTH sides would you like?', default=size))
+    print(num, size)
+    for n in range(num):
+        t.forward(size)
+        t.right(360/num)
 
 
 # https://jaxenter.com/implement-switch-case-statement-python-138315.html
 def cbx_changed(event):
     cbx_choice = event.widget.get()
     switcher = {
-        'circle': circle,
+        'circle': lambda: circle(150),
         'triangle': triangle,
         'square': lambda: square(None),
         'hexagon': hexagon
@@ -83,22 +110,27 @@ def cbx_changed(event):
     func()
 
 
-def square(size):
+def square(size=125):
     x_orig = t.position()[0]
     y_orig = t.position()[1]
     heading_orig = t.heading()
 
     if txt_square_size.get().isnumeric():
         size = int(txt_square_size.get())
-    elif not size:
+    else:  # https://stackoverflow.com/questions/16373887/how-to-set-the-text-value-content-of-an-entry-widget-using-a-button-in-tkinter
+        txt_square_size.delete(0, tk.END)
         size = s.numinput(
-            'Square', 'What size SQUARE would you like?', default=100)
+            'Square', 'What size SQUARE would you like?', default=size)
+        if size == None:
+            return
 
     if square_center.get():
         t.penup()
-        t.forward(-size/2)
+        t.forward(-apothem(4, size))
+        # t.forward(-size/2)
         t.left(-90)
-        t.forward(-size/2)
+        t.forward(-apothem(4, size))
+        # t.forward(-size/2)
         t.setheading(heading_orig)
 
     t.pendown()
@@ -134,7 +166,7 @@ frm_buttons.option_add("*font", 'arial 14 normal')
 
 btn_Square = tk.Button(frm_buttons, text="Square",
                        bg='#aaffaa', width=8, borderwidth=2,
-                       command=lambda: square(None))
+                       command=lambda: square(25))
 btn_Square.grid(row=0, column=0, pady=2, padx=(8, 0), sticky=tk.W)
 square_center = tk.BooleanVar()
 ckb_Square_center = tk.Checkbutton(frm_buttons, text='center',
@@ -167,6 +199,17 @@ cbx_functions = ttk.Combobox(frm_buttons, text="Select Function",
                              textvariable=cbx_var, values=cbx_options)
 cbx_functions.grid(row=5, column=0, pady=2, padx=8,  sticky=tk.W)
 cbx_functions.bind('<<ComboboxSelected>>', cbx_changed)
+
+btn_poly = tk.Button(frm_buttons, text="Polyagon",
+                     bg='#ffaaaa', width=16, command=lambda: poly(ask=True))
+btn_poly.grid(row=6, column=0, pady=2, padx=8, sticky=tk.W)
+
+
+scl_pensize_var = tk.IntVar()
+scl_pensize = tk.Scale(frm_buttons, orient='horizontal',
+                       resolution=1.0, from_=1, to=20,
+                       length=180, variable=scl_pensize_var, command=pen_size)
+scl_pensize.grid(row=7, column=0, pady=2, padx=8, sticky=tk.W)
 
 
 frm_canvas.grid(row=0, column=0, padx=2, pady=2, sticky=tk.NS)
