@@ -1,8 +1,8 @@
 import turtle
-from turtle import Screen, Turtle
+# from turtle import Screen, Turtle
 
-s = Screen()
-t = Turtle("turtle")
+s = turtle.Screen()
+t = turtle.Turtle("turtle")
 
 
 def initialize():

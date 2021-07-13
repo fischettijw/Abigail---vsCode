@@ -2,6 +2,7 @@ from math import tan, radians
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
+# import tkinter.colorchooser as colorchooser
 import turtle
 import os
 os.system('cls')
@@ -23,31 +24,32 @@ def initialize_screen_and_turtle():
 
 
 def test():
-    square_center.set(True)
-    t.hideturtle()
-    t.pensize(5)
-    for n in range(9):
-        square(500)
-        t.right(10)
+    pass
+#     square_center.set(True)
+#     t.hideturtle()
+#     t.pensize(5)
+#     for n in range(9):
+#         square(500)
+#         t.right(10)
 
-    t.hideturtle()
-    t.pensize(4)
-    for n in range(9):
-        square(400)
-        t.right(10)
+#     t.hideturtle()
+#     t.pensize(4)
+#     for n in range(9):
+#         square(400)
+#         t.right(10)
 
-    t.pensize(3)
-    for n in range(9):
-        square(300)
-        t.right(10)
+#     t.pensize(3)
+#     for n in range(9):
+#         square(300)
+#         t.right(10)
 
-    square_center.set(False)
-    t.pensize(2)
-    for n in range(27):
-        square(150)
-        t.right(10)
+#     square_center.set(False)
+#     t.pensize(2)
+#     for n in range(27):
+#         square(150)
+#         t.right(10)
 
-    t.showturtle()
+#     t.showturtle()
 
 
 def pen_size(sz):
@@ -84,15 +86,37 @@ def hexagon(size=100):
 
 
 def poly(num=6, size=100, ask=False):
+    x_orig = t.position()[0]
+    y_orig = t.position()[1]
+    heading_orig = t.heading()
+
     if ask:
         num = int(s.numinput(
             'Polygon', 'How many SIDES would you like?', default=num))
         size = int(s.numinput(
             'Polygon', 'What LENGTH sides would you like?', default=size))
-    print(num, size)
+
+    if square_center.get():
+        t.penup()
+        t.forward(-apothem(num, size))
+        t.left(-90)
+        t.forward(-apothem(num, size))
+        t.setheading(heading_orig)
+
+    t.pendown()
     for n in range(num):
         t.forward(size)
         t.right(360/num)
+
+    t.penup()
+    t.goto(x_orig, y_orig)
+    t.setheading(heading_orig)
+
+
+def write_text():
+    text = s.textinput(
+        'Enter Text', 'What TEXT would you like to write to the canvas?')
+    t.write(text, font=('Arial', 24, 'bold'), align='center')
 
 
 # https://jaxenter.com/implement-switch-case-statement-python-138315.html
@@ -143,9 +167,28 @@ def square(size=125):
 
 
 def pen_color():
-    bgclr = tk.colorchooser.askcolor(title="Choose color")[1]
+    bgclr = colorchooser.askcolor(title="Choose color")[1]
     btn_pencolor.config(bg=bgclr)
     t.pencolor(bgclr)
+
+
+def left_mouse_click(x, y):
+    t.pendown()
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+
+
+def right_mouse_click(x, y):
+    t.penup()
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+
+
+def dragging(x, y):  # These parameters will be the mouse position
+    t.ondrag(None)
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+    t.ondrag(dragging)
 
 
 # endregion functions
@@ -212,6 +255,11 @@ scl_pensize = tk.Scale(frm_buttons, orient='horizontal',
 scl_pensize.grid(row=7, column=0, pady=2, padx=8, sticky=tk.W)
 
 
+btn_text = tk.Button(frm_buttons, text="Write Text",
+                     bg='#ffaaaa', width=16, command=write_text)
+btn_text.grid(row=8, column=0, pady=2, padx=8, sticky=tk.W)
+
+
 frm_canvas.grid(row=0, column=0, padx=2, pady=2, sticky=tk.NS)
 frm_buttons.grid(row=0, column=1, padx=2, pady=2, sticky=tk.NSEW)
 
@@ -222,5 +270,14 @@ t = turtle.RawTurtle(s)
 
 initialize_screen_and_turtle()
 
+
+# region events   *****          EVENTS         *****
+s.onclick(left_mouse_click, btn=1)
+s.onclick(right_mouse_click, btn=3)
+
+t.ondrag(dragging)
+
+
+# endregion events
 
 win.mainloop()
