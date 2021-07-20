@@ -25,31 +25,6 @@ def initialize_screen_and_turtle():
 
 def test():
     pass
-#     square_center.set(True)
-#     t.hideturtle()
-#     t.pensize(5)
-#     for n in range(9):
-#         square(500)
-#         t.right(10)
-
-#     t.hideturtle()
-#     t.pensize(4)
-#     for n in range(9):
-#         square(400)
-#         t.right(10)
-
-#     t.pensize(3)
-#     for n in range(9):
-#         square(300)
-#         t.right(10)
-
-#     square_center.set(False)
-#     t.pensize(2)
-#     for n in range(27):
-#         square(150)
-#         t.right(10)
-
-#     t.showturtle()
 
 
 def pen_size(sz):
@@ -277,6 +252,8 @@ s.onclick(right_mouse_click, btn=3)
 
 t.ondrag(dragging)
 
+
+# key is pressed    https://www.youtube.com/watch?v=InBr_Kh4a5Y
 
 # endregion events
 
