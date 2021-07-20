@@ -1,11 +1,14 @@
+
+# region imports
 from math import tan, radians
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
-# import tkinter.colorchooser as colorchooser
 import turtle
 import os
 os.system('cls')
+
+# endregion imports
 
 # region functions
 
@@ -167,16 +170,55 @@ def dragging(x, y):  # These parameters will be the mouse position
 
 
 # endregion functions
+
+# region root Tkinter window
 win = tk.Tk()
 win.geometry(f"1780x915+70+50")
 win.title("Drawing Turtle")
 win.resizable(False, False)
 
+# endregion root Tkinter window
+
 # region GUI
+
+# region Frames
+frm_menubar = tk.Frame(win, borderwidth=0, relief='flat')
 frm_canvas = tk.Frame(win, borderwidth=5, relief='sunken')
 frm_buttons = tk.Frame(win, borderwidth=5, relief='sunken',
                        background='light gray')
-canvas = tk.Canvas(frm_canvas, width=1780-225,
+# endregion Frames
+
+# region Menubar
+menu_bar = tk.Menu(win)
+
+file_menu = tk.Menu(menu_bar)
+file_menu.add_command(label='Open')
+file_menu.add_command(label='Save')
+menu_bar.add_cascade(label='File', menu=file_menu)
+
+pen_menu = tk.Menu(menu_bar)
+pen_menu.add_command(label='Pen Color')
+pen_menu.add_command(label='Pen Thickness')
+menu_bar.add_cascade(label='Pen', menu=pen_menu)
+
+shapes_menu = tk.Menu(menu_bar)
+shapes_menu.add_command(label='Triangle')
+shapes_menu.add_command(label='Square')
+shapes_menu.add_command(label='Pentagon')
+menu_bar.add_cascade(label='Shapes', menu=shapes_menu)
+
+help_menu = tk.Menu(menu_bar)
+help_menu.add_command(label='Mouse Commands')
+help_menu.add_command(label='Key Commands')
+menu_bar.add_cascade(label='Help', menu=help_menu)
+
+
+win.config(menu=menu_bar)
+
+# endregion Menubar
+
+
+canvas = tk.Canvas(frm_canvas, width=1780-225-10,
                    height=915-15, bg='pink')
 canvas.grid(row=0, column=0)
 
@@ -240,10 +282,13 @@ frm_buttons.grid(row=0, column=1, padx=2, pady=2, sticky=tk.NSEW)
 
 # endregion GUI
 
+# region turtle and screen definition
 s = turtle.TurtleScreen(canvas)
 t = turtle.RawTurtle(s)
 
 initialize_screen_and_turtle()
+
+# endregion turtle and screen definition
 
 
 # region events   *****          EVENTS         *****
