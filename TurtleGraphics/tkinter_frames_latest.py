@@ -1,9 +1,14 @@
+
+# region imports
+from math import tan, radians
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
 import turtle
 import os
 os.system('cls')
+
+# endregion imports
 
 # region functions
 
@@ -22,57 +27,81 @@ def initialize_screen_and_turtle():
 
 
 def test():
-    square_center.set(True)
-    t.hideturtle()
-    t.pensize(5)
-    for n in range(9):
-        square(500)
-        t.right(10)
-
-    t.hideturtle()
-    t.pensize(4)
-    for n in range(9):
-        square(400)
-        t.right(10)
-
-    t.pensize(3)
-    for n in range(9):
-        square(300)
-        t.right(10)
-
-    square_center.set(False)
-    t.pensize(2)
-    for n in range(27):
-        square(150)
-        t.right(10)
-
-    t.showturtle()
+    pass
 
 
-def circle():
+def pen_size(sz):
+    t.pensize(sz)
+
+
+def apothem(num_of_sides, len_of_side):
+    return (len_of_side/2)/tan(radians(360/(2*num_of_sides)))
+
+
+def circle(size=100):
     t.pendown()
-    t.circle(200)
+    size = s.numinput(
+        'Circle', 'What size CIRCLE would you like?', default=size)
+    t.circle(size)
 
 
-def triangle():
+def triangle(size=100):
     t.pendown()
+    size = s.numinput(
+        'Triangle', 'What size TRIANGLE would you like?', default=size)
     for n in range(3):
-        t.forward(100)
+        t.forward(size)
         t.right(120)
 
 
-def hexagon():
+def hexagon(size=100):
     t.pendown()
+    size = s.numinput(
+        'Hexagon', 'What size HEXAGON would you like?', default=size)
     for n in range(6):
-        t.forward(100)
+        t.forward(size)
         t.right(60)
+
+
+def poly(num=6, size=100, ask=False):
+    x_orig = t.position()[0]
+    y_orig = t.position()[1]
+    heading_orig = t.heading()
+
+    if ask:
+        num = int(s.numinput(
+            'Polygon', 'How many SIDES would you like?', default=num))
+        size = int(s.numinput(
+            'Polygon', 'What LENGTH sides would you like?', default=size))
+
+    if square_center.get():
+        t.penup()
+        t.forward(-apothem(num, size))
+        t.left(-90)
+        t.forward(-apothem(num, size))
+        t.setheading(heading_orig)
+
+    t.pendown()
+    for n in range(num):
+        t.forward(size)
+        t.right(360/num)
+
+    t.penup()
+    t.goto(x_orig, y_orig)
+    t.setheading(heading_orig)
+
+
+def write_text():
+    text = s.textinput(
+        'Enter Text', 'What TEXT would you like to write to the canvas?')
+    t.write(text, font=('Arial', 24, 'bold'), align='center')
 
 
 # https://jaxenter.com/implement-switch-case-statement-python-138315.html
 def cbx_changed(event):
     cbx_choice = event.widget.get()
     switcher = {
-        'circle': circle,
+        'circle': lambda: circle(150),
         'triangle': triangle,
         'square': lambda: square(None),
         'hexagon': hexagon
@@ -83,22 +112,27 @@ def cbx_changed(event):
     func()
 
 
-def square(size):
+def square(size=125):
     x_orig = t.position()[0]
     y_orig = t.position()[1]
     heading_orig = t.heading()
 
     if txt_square_size.get().isnumeric():
         size = int(txt_square_size.get())
-    elif not size:
+    else:  # https://stackoverflow.com/questions/16373887/how-to-set-the-text-value-content-of-an-entry-widget-using-a-button-in-tkinter
+        txt_square_size.delete(0, tk.END)
         size = s.numinput(
-            'Square', 'What size SQUARE would you like?', default=100)
+            'Square', 'What size SQUARE would you like?', default=size)
+        if size == None:
+            return
 
     if square_center.get():
         t.penup()
-        t.forward(-size/2)
+        t.forward(-apothem(4, size))
+        # t.forward(-size/2)
         t.left(-90)
-        t.forward(-size/2)
+        t.forward(-apothem(4, size))
+        # t.forward(-size/2)
         t.setheading(heading_orig)
 
     t.pendown()
@@ -111,16 +145,39 @@ def square(size):
 
 
 def pen_color():
-    bgclr = tk.colorchooser.askcolor(title="Choose color")[1]
+    bgclr = colorchooser.askcolor(title="Choose color")[1]
     btn_pencolor.config(bg=bgclr)
     t.pencolor(bgclr)
 
 
+def left_mouse_click(x, y):
+    t.pendown()
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+
+
+def right_mouse_click(x, y):
+    t.penup()
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+
+
+def dragging(x, y):  # These parameters will be the mouse position
+    t.ondrag(None)
+    t.setheading(t.towards(x, y))
+    t.goto(x, y)
+    t.ondrag(dragging)
+
+
 # endregion functions
+
+# region root Tkinter window
 win = tk.Tk()
 win.geometry(f"1780x915+70+50")
 win.title("Drawing Turtle")
 win.resizable(False, False)
+
+# endregion root Tkinter window
 
 # region GUI
 frm_canvas = tk.Frame(win, borderwidth=5, relief='sunken')
@@ -134,7 +191,7 @@ frm_buttons.option_add("*font", 'arial 14 normal')
 
 btn_Square = tk.Button(frm_buttons, text="Square",
                        bg='#aaffaa', width=8, borderwidth=2,
-                       command=lambda: square(None))
+                       command=lambda: square(25))
 btn_Square.grid(row=0, column=0, pady=2, padx=(8, 0), sticky=tk.W)
 square_center = tk.BooleanVar()
 ckb_Square_center = tk.Checkbutton(frm_buttons, text='center',
@@ -168,16 +225,46 @@ cbx_functions = ttk.Combobox(frm_buttons, text="Select Function",
 cbx_functions.grid(row=5, column=0, pady=2, padx=8,  sticky=tk.W)
 cbx_functions.bind('<<ComboboxSelected>>', cbx_changed)
 
+btn_poly = tk.Button(frm_buttons, text="Polyagon",
+                     bg='#ffaaaa', width=16, command=lambda: poly(ask=True))
+btn_poly.grid(row=6, column=0, pady=2, padx=8, sticky=tk.W)
+
+
+scl_pensize_var = tk.IntVar()
+scl_pensize = tk.Scale(frm_buttons, orient='horizontal',
+                       resolution=1.0, from_=1, to=20,
+                       length=180, variable=scl_pensize_var, command=pen_size)
+scl_pensize.grid(row=7, column=0, pady=2, padx=8, sticky=tk.W)
+
+
+btn_text = tk.Button(frm_buttons, text="Write Text",
+                     bg='#ffaaaa', width=16, command=write_text)
+btn_text.grid(row=8, column=0, pady=2, padx=8, sticky=tk.W)
+
 
 frm_canvas.grid(row=0, column=0, padx=2, pady=2, sticky=tk.NS)
 frm_buttons.grid(row=0, column=1, padx=2, pady=2, sticky=tk.NSEW)
 
 # endregion GUI
 
+# region turtle and screen definition
 s = turtle.TurtleScreen(canvas)
 t = turtle.RawTurtle(s)
 
 initialize_screen_and_turtle()
 
+# endregion turtle and screen definition
+
+
+# region events   *****          EVENTS         *****
+s.onclick(left_mouse_click, btn=1)
+s.onclick(right_mouse_click, btn=3)
+
+t.ondrag(dragging)
+
+
+# key is pressed    https://www.youtube.com/watch?v=InBr_Kh4a5Y
+
+# endregion events
 
 win.mainloop()

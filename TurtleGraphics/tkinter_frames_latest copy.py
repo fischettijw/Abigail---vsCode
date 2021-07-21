@@ -1,6 +1,7 @@
 
 # region imports
 from math import tan, radians
+import time as tm
 import tkinter as tk
 from tkinter import ttk
 from tkinter import colorchooser
@@ -26,10 +27,6 @@ def initialize_screen_and_turtle():
     t.showturtle()
 
 
-def test():
-    pass
-
-
 def pen_size(sz):
     t.pensize(sz)
 
@@ -52,6 +49,8 @@ def triangle(size=100):
     for n in range(3):
         t.forward(size)
         t.right(120)
+
+    lbl_status_1['text'] = f'TRIANGLE ({int(size)})'
 
 
 def hexagon(size=100):
@@ -89,6 +88,8 @@ def poly(num=6, size=100, ask=False):
     t.penup()
     t.goto(x_orig, y_orig)
     t.setheading(heading_orig)
+
+    lbl_status_1['text'] = f'POLYGON ({num} X {int(size)})'
 
 
 def write_text():
@@ -143,6 +144,8 @@ def square(size=125):
     t.goto(x_orig, y_orig)
     t.setheading(heading_orig)
 
+    lbl_status_1['text'] = f'SQUARE ({int(size)})'
+
 
 def pen_color():
     bgclr = colorchooser.askcolor(title="Choose color")[1]
@@ -173,7 +176,8 @@ def dragging(x, y):  # These parameters will be the mouse position
 
 # region root Tkinter window
 win = tk.Tk()
-win.geometry(f"1780x915+70+50")
+win.geometry(f"1780x945+70+30")
+# win.geometry(f"1780x915+70+50")
 win.title("Drawing Turtle")
 win.resizable(False, False)
 
@@ -188,7 +192,7 @@ frm_buttons = tk.Frame(win, borderwidth=5, relief='sunken',
                        background='light gray')
 # endregion Frames
 
-# region Menubar
+# region Menubar & Status Bar
 menu_bar = tk.Menu(win)
 
 file_menu = tk.Menu(menu_bar)
@@ -197,14 +201,14 @@ file_menu.add_command(label='Save')
 menu_bar.add_cascade(label='File', menu=file_menu)
 
 pen_menu = tk.Menu(menu_bar)
-pen_menu.add_command(label='Pen Color')
+pen_menu.add_command(label='Pen Color', command=pen_color)
 pen_menu.add_command(label='Pen Thickness')
 menu_bar.add_cascade(label='Pen', menu=pen_menu)
 
 shapes_menu = tk.Menu(menu_bar)
 shapes_menu.add_command(label='Triangle')
-shapes_menu.add_command(label='Square')
-shapes_menu.add_command(label='Pentagon')
+shapes_menu.add_command(label='Square', command=lambda: square(100))
+shapes_menu.add_command(label='Pentagon', command=lambda: poly(5, 100, True))
 menu_bar.add_cascade(label='Shapes', menu=shapes_menu)
 
 help_menu = tk.Menu(menu_bar)
@@ -212,15 +216,32 @@ help_menu.add_command(label='Mouse Commands')
 help_menu.add_command(label='Key Commands')
 menu_bar.add_cascade(label='Help', menu=help_menu)
 
-
 win.config(menu=menu_bar)
 
-# endregion Menubar
+# status_bar = tk.Label(win, text="This will contain STATUS !!!!!!",
+#                       bd=1, relief=tk.SUNKEN, anchor=tk.W)
+# status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+
+
+# endregion Menubar & Status Bar
 
 
 canvas = tk.Canvas(frm_canvas, width=1780-225-10,
-                   height=915-15, bg='pink')
-canvas.grid(row=0, column=0)
+                   height=915-15)
+canvas.grid(row=0, column=0, columnspan=3)
+
+# status_bar = tk.Label(frm_canvas, text="This will contain STATUS !!!!!!",
+#                       bd=1, relief=tk.SUNKEN, anchor=tk.W, font='courier 14')
+# status_bar.grid(row=1, column=0, sticky=tk.EW)
+lbl_status_1 = tk.Label(frm_canvas, text="This will contain STATUS 1 !!!!!!",
+                        bd=1, relief=tk.SUNKEN,  font='courier 14', width=1)
+lbl_status_1.grid(row=1, column=0, sticky=tk.EW)
+lbl_status_2 = tk.Label(frm_canvas, text="This will contain STATUS 2 !!!!!!",
+                        bd=1, relief=tk.SUNKEN,  font='courier 14', width=1)
+lbl_status_2.grid(row=1, column=1, sticky=tk.EW)
+lbl_status_3 = tk.Label(frm_canvas, text="This will contain STATUS 3 !!!!!!",
+                        bd=1, relief=tk.SUNKEN,  font='courier 14', width=1)
+lbl_status_3.grid(row=1, column=2, sticky=tk.EW)
 
 frm_buttons.option_add("*font", 'arial 14 normal')
 
@@ -247,9 +268,6 @@ btn_pencolor.grid(row=2, column=0, pady=2, padx=1)
 btn_clear = tk.Button(frm_buttons, text="Initialize",
                       bg='white', width=16, command=initialize_screen_and_turtle)
 btn_clear.grid(row=3, column=0, pady=2, padx=1)
-btn_test = tk.Button(frm_buttons, text="TEST",
-                     bg='#ffaaaa', width=16, command=test)
-btn_test.grid(row=4, column=0, pady=2, padx=8, sticky=tk.W)
 
 cbx_var = tk.StringVar()
 cbx_options = ['circle', 'triangle', 'square', 'hexagon']
