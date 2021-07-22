@@ -25,10 +25,29 @@ def initialize_screen_and_turtle():
     t.pencolor('red')
     btn_pencolor.config(bg='red')
     t.showturtle()
+    lbl_status_2['text'] = '(0 , 0)'
 
 
 def pen_size(sz):
     t.pensize(sz)
+
+
+def goto_pen_down():
+    t.pendown()
+    x = s.numinput(
+        'Goto - Pen Down', "Enter 'X' Coordinate", default=0)
+    y = s.numinput(
+        'Goto - Pen Down', "Enter 'Y' Coordinate", default=0)
+    t.goto(x, y)
+
+
+def goto_pen_up():
+    t.penup()
+    x = s.numinput(
+        'Goto - Pen Down', "Enter 'X' Coordinate", default=0)
+    y = s.numinput(
+        'Goto - Pen Down', "Enter 'Y' Coordinate", default=0)
+    t.goto(x, y)
 
 
 def apothem(num_of_sides, len_of_side):
@@ -157,22 +176,34 @@ def left_mouse_click(x, y):
     t.pendown()
     t.setheading(t.towards(x, y))
     t.goto(x, y)
+    lbl_status_2['text'] = f'({int(x)} , {int(y)})'
 
 
 def right_mouse_click(x, y):
     t.penup()
     t.setheading(t.towards(x, y))
     t.goto(x, y)
+    lbl_status_2['text'] = f'({int(x)} , {int(y)})'
 
 
 def dragging(x, y):  # These parameters will be the mouse position
     t.ondrag(None)
     t.setheading(t.towards(x, y))
     t.goto(x, y)
+    lbl_status_2['text'] = f'({int(x)} , {int(y)})'
     t.ondrag(dragging)
 
 
+def mouse_motion(event):
+    fudge_x = event.x-860+75+10
+    fudge_y = event.y-540+90-1
+    lbl_status_3['text'] = f'({int(fudge_x)} , {int(fudge_y)})'
+    # lbl_status_3['text'] = f'({int(frm_canvas.winfo_pointerx())} , {int(frm_canvas.winfo_pointery())})'
+    # lbl_status_3['text'] = f'({int(canvas.winfo_pointerx())} , {int(canvas.winfo_pointery())})'
+
+
 # endregion functions
+
 
 # region root Tkinter window
 win = tk.Tk()
@@ -203,6 +234,8 @@ menu_bar.add_cascade(label='File', menu=file_menu)
 pen_menu = tk.Menu(menu_bar)
 pen_menu.add_command(label='Pen Color', command=pen_color)
 pen_menu.add_command(label='Pen Thickness')
+pen_menu.add_command(label='Goto X,Y (Pen Down)', command=goto_pen_down)
+pen_menu.add_command(label='Goto X,Y (Pen Up)', command=goto_pen_up)
 menu_bar.add_cascade(label='Pen', menu=pen_menu)
 
 shapes_menu = tk.Menu(menu_bar)
@@ -230,13 +263,10 @@ canvas = tk.Canvas(frm_canvas, width=1780-225-10,
                    height=915-15)
 canvas.grid(row=0, column=0, columnspan=3)
 
-# status_bar = tk.Label(frm_canvas, text="This will contain STATUS !!!!!!",
-#                       bd=1, relief=tk.SUNKEN, anchor=tk.W, font='courier 14')
-# status_bar.grid(row=1, column=0, sticky=tk.EW)
-lbl_status_1 = tk.Label(frm_canvas, text="This will contain STATUS 1 !!!!!!",
+lbl_status_1 = tk.Label(frm_canvas, text="SHAPE",
                         bd=1, relief=tk.SUNKEN,  font='courier 14', width=1)
 lbl_status_1.grid(row=1, column=0, sticky=tk.EW)
-lbl_status_2 = tk.Label(frm_canvas, text="This will contain STATUS 2 !!!!!!",
+lbl_status_2 = tk.Label(frm_canvas, text='(0 , 0)',
                         bd=1, relief=tk.SUNKEN,  font='courier 14', width=1)
 lbl_status_2.grid(row=1, column=1, sticky=tk.EW)
 lbl_status_3 = tk.Label(frm_canvas, text="This will contain STATUS 3 !!!!!!",
@@ -312,6 +342,7 @@ initialize_screen_and_turtle()
 # region events   *****          EVENTS         *****
 s.onclick(left_mouse_click, btn=1)
 s.onclick(right_mouse_click, btn=3)
+win.bind('<Motion>', mouse_motion)
 
 t.ondrag(dragging)
 
