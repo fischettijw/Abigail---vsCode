@@ -209,7 +209,7 @@ def mouse_motion(event):
 win = tk.Tk()
 win.geometry(f"1780x945+70+30")
 # win.geometry(f"1780x915+70+50")
-win.title("Drawing Turtle")
+win.title("Python Draw by Joseph Fischetti")
 win.resizable(False, False)
 
 # endregion root Tkinter window
