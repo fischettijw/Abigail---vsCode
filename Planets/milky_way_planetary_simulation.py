@@ -17,9 +17,10 @@ BLUE = (100, 149, 237)
 RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
 
-FONT = pygame.font.SysFont("comicsans", 16)
-FONT2 = pygame.font.SysFont("comicsans", 30)
-title_text = FONT2.render(program_title, True, WHITE)
+FONT_distance_to_sun_text = pygame.font.SysFont("comicsans", 16)
+FONT_title_text = pygame.font.SysFont("comicsans", 30)
+
+title_text = FONT_title_text.render(program_title, True, WHITE)
 title_text.get_rect()
 # print(title_text.get_rect())
 
@@ -27,7 +28,7 @@ title_text.get_rect()
 class Planet:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
-    SCALE = 270 / AU  # 1AU = 100 pixels if 250
+    SIZE_SCALE = 250 / AU  # 1AU = 100 pixels if 250
     TIMESTEP = 3600*24  # 1 day in seconds
     CENTER_OFFSET = 200
     STOP_AFTER = 900
@@ -48,19 +49,20 @@ class Planet:
         self.y_vel = y_vel * y_vel_change
 
     def draw(self, win):
-        x = self.x * self.SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
-        y = self.y * self.SCALE + HEIGHT / 2
+        # draw Planets
+        x = self.x * self.SIZE_SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
+        y = self.y * self.SIZE_SCALE + HEIGHT / 2
         pygame.draw.circle(win, self.color, (x, y), self.radius)
         
         # Place names and distance to sun on Planets
         if self.name != "sun":     
-            distance_text = FONT.render(
+            distance_text = FONT_distance_to_sun_text.render(
                 f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
 
             win.blit(distance_text, (x - distance_text.get_width()/2,
                                      y - distance_text.get_height()/2 - 2*self.radius - 5))
 
-            planet_text = FONT.render(self.name, 1, WHITE)
+            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
             win.blit(planet_text, (x - planet_text.get_width()/2,
                                    y - planet_text.get_height()/2 + 2*self.radius))        
         
@@ -69,8 +71,8 @@ class Planet:
             updated_points = []
             for point in self.orbit:
                 x, y = point
-                x = x * self.SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
-                y = y * self.SCALE + HEIGHT / 2
+                x = x * self.SIZE_SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
+                y = y * self.SIZE_SCALE + HEIGHT / 2
 
                 if len(updated_points) < Planet.STOP_AFTER:
                     updated_points.append((x, y))
@@ -141,7 +143,7 @@ def main():
     planets = [sun, mercury, venus, earth, mars]
 
     while run:
-        clock.tick(60)
+        clock.tick(30)
         SCREEN.fill((0, 0, 0))
 
         for event in pygame.event.get():
