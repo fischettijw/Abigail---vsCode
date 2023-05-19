@@ -2,11 +2,14 @@
 
 import pygame
 import math
+
 pygame.init()
 
-WIDTH, HEIGHT = 1200, 900
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Planetary Simulation of the Inner Planets")
+WIDTH, HEIGHT = 1300, 900
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+
+program_title = "Planetary Simulation of the Inner Planets"
+pygame.display.set_caption(program_title)
 
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
@@ -15,14 +18,19 @@ RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
 
 FONT = pygame.font.SysFont("comicsans", 16)
+FONT2 = pygame.font.SysFont("comicsans", 30)
+title_text = FONT2.render(program_title, True, WHITE)
+title_text.get_rect()
+# print(title_text.get_rect())
 
 
 class Planet:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
     SCALE = 270 / AU  # 1AU = 100 pixels if 250
-    TIMESTEP = 3600*24  # 1 day
-    CENTER_OFFSET = 150
+    TIMESTEP = 3600*24  # 1 day in seconds
+    CENTER_OFFSET = 200
+    STOP_AFTER = 900
 
     def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
         self.name = name
@@ -33,7 +41,7 @@ class Planet:
         self.mass = mass
 
         self.orbit = []
-        self.sun = False
+        # self.sun = False
         self.distance_to_sun = 0
 
         self.x_vel = 0
@@ -42,29 +50,33 @@ class Planet:
     def draw(self, win):
         x = self.x * self.SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
         y = self.y * self.SCALE + HEIGHT / 2
+        pygame.draw.circle(win, self.color, (x, y), self.radius)
+        
+        # Place names and distance to sun on Planets
+        if self.name != "sun":     
+            distance_text = FONT.render(
+                f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
 
+            win.blit(distance_text, (x - distance_text.get_width()/2,
+                                     y - distance_text.get_height()/2 - 2*self.radius - 5))
+
+            planet_text = FONT.render(self.name, 1, WHITE)
+            win.blit(planet_text, (x - planet_text.get_width()/2,
+                                   y - planet_text.get_height()/2 + 2*self.radius))        
+        
+        # draw orbits (stop after STOP_AFTER points - trial and error)
         if len(self.orbit) > 2:
             updated_points = []
             for point in self.orbit:
                 x, y = point
                 x = x * self.SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
                 y = y * self.SCALE + HEIGHT / 2
-                updated_points.append((x, y))
+
+                if len(updated_points) < Planet.STOP_AFTER:
+                    updated_points.append((x, y))
 
             pygame.draw.lines(win, self.color, False, updated_points, 2)
 
-        pygame.draw.circle(win, self.color, (x, y), self.radius)
-
-        if not self.sun:
-            distance_text = FONT.render(
-                f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
-
-            win.blit(distance_text, (x - distance_text.get_width()/2,
-                     y - distance_text.get_height()/2 - 2*self.radius - 5))
-
-            planet_text = FONT.render(self.name, 1, WHITE)
-            win.blit(planet_text, (x - planet_text.get_width()/2,
-                     y - planet_text.get_height()/2 + 2*self.radius))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -72,7 +84,7 @@ class Planet:
         distance_y = other_y - self.y
         distance = math.sqrt(distance_x ** 2 + distance_y ** 2)
 
-        if other.sun:
+        if other.name == "sun":
             self.distance_to_sun = distance
 
         force = self.G * self.mass * other.mass / distance**2
@@ -96,17 +108,19 @@ class Planet:
 
         self.x += self.x_vel * self.TIMESTEP
         self.y += self.y_vel * self.TIMESTEP
-        self.orbit.append((self.x, self.y))
+
+        if len(self.orbit) < Planet.STOP_AFTER:         # (stop after STOP_AFTER points - trial and error)
+            self.orbit.append((self.x, self.y))
 
 
 def main():
     run = True
     clock = pygame.time.Clock()
 
-    # def __init__(self, x, y, radius, color, mass, y_vel):
+    # def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
 
     sun = Planet("sun", 0, 0, 30, YELLOW, 1.98892 * 10**30, 0, 1)
-    sun.sun = True
+    # sun.sun = True
 
     mercury_y_vel_ratio = 1
     mercury = Planet("mercury", 0.387, 0, 8, DARK_GREY,
@@ -115,16 +129,20 @@ def main():
     venus_y_vel_ratio = 1
     venus = Planet("venus", 0.723, 0, 14, WHITE,
                    venus_y_vel_ratio*4.8685 * 10**24, -35.02 * 1000, 1)
-	
-    earth = Planet("earth", -1, 0, 16, BLUE, 5.9742 * 10**24, 29.783 * 1000, 1)
 
-    mars = Planet("mars", -1.524, 0, 12, RED, 6.39 * 10**23, 24.077 * 1000, 1)
+    earth_y_vel_ratio = 1
+    earth = Planet("earth", -1, 0, 16, BLUE, earth_y_vel_ratio *
+                   5.9742 * 10**24, 29.783 * 1000, 1)
+
+    mars_y_vel_ratio = 1
+    mars = Planet("mars", -1.524, 0, 12, RED, mars_y_vel_ratio *
+                  6.39 * 10**23, 24.077 * 1000, 1)
 
     planets = [sun, mercury, venus, earth, mars]
 
     while run:
         clock.tick(60)
-        WIN.fill((0, 0, 0))
+        SCREEN.fill((0, 0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -132,8 +150,9 @@ def main():
 
         for planet in planets:
             planet.update_position(planets)
-            planet.draw(WIN)
+            planet.draw(SCREEN)
 
+        SCREEN.blit(title_text, (10, 10))
         pygame.display.flip()
 
     pygame.quit()
