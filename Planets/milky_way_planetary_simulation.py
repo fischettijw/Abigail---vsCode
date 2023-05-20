@@ -49,7 +49,7 @@ class Planet:
 
     def draw(self, win):
         # draw orbits (stop after STOP_AFTER points)
-        if len(self.orbit) > 2:
+        if len(self.orbit) > 1:
             updated_points = []
             for point in self.orbit:
                 x, y = point

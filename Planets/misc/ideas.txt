@@ -1,0 +1,6 @@
+1) what is the difference in orbit if only the SUN was considered when calculating gravitational forces (Newton's 4th Law)
+
+2) can you claculate Mercury's orbit with the help of Einstein's Law of General Relativity?
+
+3) What is deterministic versus probabilistic simulation?
+In deterministic models, the output of the model is fully determined by the parameter values and the initial values, whereas probabilistic (or stochastic) models incorporate randomness in their approach. Consequently, the same set of parameter values and initial conditions will lead to a group of different outputs.
