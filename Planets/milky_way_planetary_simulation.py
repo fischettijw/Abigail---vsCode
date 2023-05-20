@@ -21,7 +21,8 @@ DARK_GREY = (80, 78, 81)
 FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 FONT_title_text = pygame.font.SysFont("comicsans", 28)
 
-FONT_distance_to_sun_text_stat = pygame.font.SysFont("Lucida Sans Typewriter", 20)
+FONT_distance_to_sun_text_stat = pygame.font.SysFont(
+    "Lucida Sans Typewriter", 20)
 stats_title = "Distance from the Sun"
 title_text_stat = FONT_distance_to_sun_text_stat.render(stats_title, 1, WHITE)
 
@@ -36,9 +37,10 @@ pause_text = FONT_distance_to_sun_text.render(pause, 1, WHITE)
 abigail = "by Abigail Lightle"
 abigail_text = FONT_title_text.render(abigail, 1, WHITE)
 
+orbital_vel_title = "Orbital Velocity"
+orbital_text = FONT_distance_to_sun_text_stat.render(orbital_vel_title, 1, WHITE)
+
 fps = 60
-
-
 
 
 class Planet:
@@ -139,7 +141,7 @@ def display_planet_stats(player, x, y):
     distance_text = FONT_distance_to_sun_text.render(
         f"{space}{math.floor(player.distance_to_sun/1000)} km", 1, WHITE)
     SCREEN.blit(distance_text, (x + 150, 83 + y))
-    
+
 
 def pause():
     paused = True
@@ -151,7 +153,7 @@ def pause():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     paused = False
-                    
+
 
 # def main():
 run = True
@@ -189,11 +191,11 @@ while run:
             run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
-                fps = (fps-5) if fps>5 else fps 
+                fps = (fps-5) if fps > 5 else fps
             if event.key == pygame.K_UP:
                 fps += 5
             if event.key == pygame.K_p:
-                pause() 
+                pause()
 
     for planet in planets:
         planet.update_position(planets)
@@ -205,18 +207,25 @@ while run:
     SCREEN.blit(title_text, (300, 5))
     SCREEN.blit(title_text_stat, (50, 30 + 100))
 
-    pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220), width=3, border_radius = 20)
+    pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
+                     width=3, border_radius=20)
     display_planet_stats(mercury, 30, 100)
     display_planet_stats(venus, 30, 140)
     display_planet_stats(earth, 30, 180)
     display_planet_stats(mars, 30, 220)
-    
-    pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220), width=3, border_radius = 20)
-    SCREEN.blit(action_text,(85, 390))
-    SCREEN.blit(action_up_text,(50, 430))
-    SCREEN.blit(action_down_text,(50, 460))
+
+    pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220),
+                     width=3, border_radius=20)
+    SCREEN.blit(action_text, (85, 390))
+    SCREEN.blit(action_up_text, (50, 430))
+    SCREEN.blit(action_down_text, (50, 460))
     SCREEN.blit(pause_text, (50, 490))
-    SCREEN.blit(abigail_text, (1040,840))
+    SCREEN.blit(abigail_text, (1040, 840))
+    
+    pygame.draw.rect(SCREEN, WHITE, (30, 640, 290, 220),
+                    width=3, border_radius=20)
+    SCREEN.blit(orbital_text, (80, 655))
+    
 
     pygame.display.flip()
 
