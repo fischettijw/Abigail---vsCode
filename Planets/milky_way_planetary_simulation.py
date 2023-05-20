@@ -33,6 +33,8 @@ action_down = "Down Arrow - FPS down 5"
 action_down_text = FONT_distance_to_sun_text.render(action_down, 1, WHITE)
 pause = "p          - Pause Toggle"
 pause_text = FONT_distance_to_sun_text.render(pause, 1, WHITE)
+abigail = "by Abigail Lightle"
+abigail_text = FONT_title_text.render(abigail, 1, WHITE)
 
 fps = 60
 
@@ -214,6 +216,7 @@ while run:
     SCREEN.blit(action_up_text,(50, 430))
     SCREEN.blit(action_down_text,(50, 460))
     SCREEN.blit(pause_text, (50, 490))
+    SCREEN.blit(abigail_text, (1040,840))
 
     pygame.display.flip()
 
