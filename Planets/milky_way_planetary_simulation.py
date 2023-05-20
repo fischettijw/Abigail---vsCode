@@ -2,6 +2,7 @@
 
 import pygame
 import math
+import time
 
 pygame.init()
 
@@ -17,13 +18,14 @@ BLUE = (100, 149, 237)
 RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
 
-FONT_distance_to_sun_text = pygame.font.SysFont("comicsans", 16)
+FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 FONT_title_text = pygame.font.SysFont("comicsans", 28)
 
 FPS = 60
 
-title_text = FONT_title_text.render(f"{program_title} - {FPS} fps", True, WHITE)
-print(title_text.get_rect()[2])
+title_text = FONT_title_text.render(
+    f"{program_title} - {FPS} fps", True, WHITE)
+# print(title_text.get_rect()[2])
 
 
 class Planet:
@@ -69,11 +71,11 @@ class Planet:
 
         # Place names and distance to sun on Planets
         if self.name != "sun":
-            distance_text = FONT_distance_to_sun_text.render(
-                f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
+            # distance_text = FONT_distance_to_sun_text.render(
+            #     f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
 
-            win.blit(distance_text, (x - distance_text.get_width()/2,
-                                     y - distance_text.get_height()/2 - 2*self.radius - 5))
+            # win.blit(distance_text, (x - distance_text.get_width()/2,
+            #                          y - distance_text.get_height()/2 - 2*self.radius - 5))
 
             planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
             win.blit(planet_text, (x - planet_text.get_width()/2,
@@ -115,48 +117,71 @@ class Planet:
             self.orbit.append((self.x, self.y))
 
 
-def main():
-    run = True
-    clock = pygame.time.Clock()
+def display_planet_stats(player, x, y):
+    
+    planet_text = FONT_distance_to_sun_text.render(player.name, 1, WHITE)
+    SCREEN.blit(planet_text, (x + 60, 80 + y))
+    pygame.draw.circle(SCREEN, player.color, (10 + 50, 88 + y), player.radius)
 
-    # def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
-
-    sun = Planet("sun", 0, 0, 30, YELLOW, 1.98892 * 10**30, 0)
-
-    mercury_y_vel_ratio = 1
-    mercury = Planet("mercury", 0.387, 0, 8, DARK_GREY,
-                     mercury_y_vel_ratio * 3.30 * 10**23, -47.4 * 1000, mercury_y_vel_ratio)
-
-    venus_y_vel_ratio = 1
-    venus = Planet("venus", 0.723, 0, 14, WHITE,
-                   venus_y_vel_ratio*4.8685 * 10**24, -35.02 * 1000, venus_y_vel_ratio)
-
-    earth_y_vel_ratio = 1
-    earth = Planet("earth", -1, 0, 16, BLUE,
-                   5.9742 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
-
-    mars_y_vel_ratio = 1
-    mars = Planet("mars", -1.524, 0, 12, RED,
-                  6.39 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
-
-    planets = [sun, mercury, venus, earth, mars]
-
-    while run:
-        clock.tick(FPS)
-        SCREEN.fill((0, 0, 0))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-
-        for planet in planets:
-            planet.update_position(planets)
-            planet.draw(SCREEN)
-
-        SCREEN.blit(title_text, (5, 5))
-        pygame.display.flip()
-
-    pygame.quit()
+    space = " " if player.name == "mercury" else ""
+    distance_text = FONT_distance_to_sun_text.render(
+        f"{space}{math.floor(player.distance_to_sun/1000)} km", 1, WHITE)
+    SCREEN.blit(distance_text, (x + 150, 83 + y))
 
 
-main()
+# def main():
+run = True
+clock = pygame.time.Clock()
+
+# def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
+
+sun = Planet("sun", 0, 0, 30, YELLOW, 1.98892 * 10**30, 0)
+
+mercury_y_vel_ratio = 1
+mercury = Planet("mercury", 0.387, 0, 8, DARK_GREY,
+                    mercury_y_vel_ratio * 3.30 * 10**23, -47.4 * 1000, mercury_y_vel_ratio)
+
+venus_y_vel_ratio = 1
+venus = Planet("venus", 0.723, 0, 14, WHITE,
+                venus_y_vel_ratio*4.8685 * 10**24, -35.02 * 1000, venus_y_vel_ratio)
+
+earth_y_vel_ratio = 1
+earth = Planet("earth", -1, 0, 16, BLUE,
+                5.9742 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
+
+mars_y_vel_ratio = 1
+mars = Planet("mars", -1.524, 0, 12, RED,
+                6.39 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
+
+planets = [sun, mercury, venus, earth, mars]
+
+ticks = 0
+while run:
+    clock.tick(FPS)
+    SCREEN.fill((0, 0, 0))
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+    for planet in planets:
+        planet.update_position(planets)
+        planet.draw(SCREEN)
+
+    SCREEN.blit(title_text, (300, 5))
+    
+    stats_title = "Distance from the Sun"
+    title_text2 = FONT_distance_to_sun_text.render(stats_title, 1, WHITE)
+    SCREEN.blit(title_text2, ( 75, 40 + 100))
+    
+    display_planet_stats(mercury, 30, 100)
+    display_planet_stats(venus, 30, 140)
+    display_planet_stats(earth, 30, 180)
+    display_planet_stats(mars, 30, 220)
+
+    pygame.display.flip()
+
+pygame.quit()
+
+
+# main()
