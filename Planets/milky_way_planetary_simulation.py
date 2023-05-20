@@ -21,11 +21,22 @@ DARK_GREY = (80, 78, 81)
 FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 FONT_title_text = pygame.font.SysFont("comicsans", 28)
 
-FPS = 60
+FONT_distance_to_sun_text_stat = pygame.font.SysFont("Lucida Sans Typewriter", 20)
+stats_title = "Distance from the Sun"
+title_text_stat = FONT_distance_to_sun_text_stat.render(stats_title, 1, WHITE)
 
-title_text = FONT_title_text.render(
-    f"{program_title} - {FPS} fps", True, WHITE)
-# print(title_text.get_rect()[2])
+action_title = "Action Shortcuts"
+action_text = FONT_distance_to_sun_text_stat.render(action_title, 1, WHITE)
+action_up = "Up Arrow   - FPS up 5"
+action_up_text = FONT_distance_to_sun_text.render(action_up, 1, WHITE)
+action_down = "Down Arrow - FPS down 5"
+action_down_text = FONT_distance_to_sun_text.render(action_down, 1, WHITE)
+pause = "p          - Pause Toggle"
+pause_text = FONT_distance_to_sun_text.render(pause, 1, WHITE)
+
+fps = 60
+
+
 
 
 class Planet:
@@ -118,7 +129,6 @@ class Planet:
 
 
 def display_planet_stats(player, x, y):
-    
     planet_text = FONT_distance_to_sun_text.render(player.name, 1, WHITE)
     SCREEN.blit(planet_text, (x + 60, 80 + y))
     pygame.draw.circle(SCREEN, player.color, (10 + 50, 88 + y), player.radius)
@@ -127,7 +137,19 @@ def display_planet_stats(player, x, y):
     distance_text = FONT_distance_to_sun_text.render(
         f"{space}{math.floor(player.distance_to_sun/1000)} km", 1, WHITE)
     SCREEN.blit(distance_text, (x + 150, 83 + y))
+    
 
+def pause():
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    paused = False
+                    
 
 # def main():
 run = True
@@ -139,45 +161,59 @@ sun = Planet("sun", 0, 0, 30, YELLOW, 1.98892 * 10**30, 0)
 
 mercury_y_vel_ratio = 1
 mercury = Planet("mercury", 0.387, 0, 8, DARK_GREY,
-                    mercury_y_vel_ratio * 3.30 * 10**23, -47.4 * 1000, mercury_y_vel_ratio)
+                 mercury_y_vel_ratio * 3.30 * 10**23, -47.4 * 1000, mercury_y_vel_ratio)
 
 venus_y_vel_ratio = 1
 venus = Planet("venus", 0.723, 0, 14, WHITE,
-                venus_y_vel_ratio*4.8685 * 10**24, -35.02 * 1000, venus_y_vel_ratio)
+               venus_y_vel_ratio*4.8685 * 10**24, -35.02 * 1000, venus_y_vel_ratio)
 
 earth_y_vel_ratio = 1
 earth = Planet("earth", -1, 0, 16, BLUE,
-                5.9742 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
+               5.9742 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
 
 mars_y_vel_ratio = 1
 mars = Planet("mars", -1.524, 0, 12, RED,
-                6.39 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
+              6.39 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
 
 planets = [sun, mercury, venus, earth, mars]
 
 ticks = 0
 while run:
-    clock.tick(FPS)
+    clock.tick(fps)
     SCREEN.fill((0, 0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_DOWN:
+                fps = (fps-5) if fps>5 else fps 
+            if event.key == pygame.K_UP:
+                fps += 5
+            if event.key == pygame.K_p:
+                pause() 
 
     for planet in planets:
         planet.update_position(planets)
         planet.draw(SCREEN)
 
+    title_text = FONT_title_text.render(
+        f"{program_title} - {fps} fps", True, WHITE)
+
     SCREEN.blit(title_text, (300, 5))
-    
-    stats_title = "Distance from the Sun"
-    title_text2 = FONT_distance_to_sun_text.render(stats_title, 1, WHITE)
-    SCREEN.blit(title_text2, ( 75, 40 + 100))
-    
+    SCREEN.blit(title_text_stat, (50, 30 + 100))
+
+    pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220), width=3, border_radius = 20)
     display_planet_stats(mercury, 30, 100)
     display_planet_stats(venus, 30, 140)
     display_planet_stats(earth, 30, 180)
     display_planet_stats(mars, 30, 220)
+    
+    pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220), width=3, border_radius = 20)
+    SCREEN.blit(action_text,(85, 390))
+    SCREEN.blit(action_up_text,(50, 430))
+    SCREEN.blit(action_down_text,(50, 460))
+    SCREEN.blit(pause_text, (50, 490))
 
     pygame.display.flip()
 
