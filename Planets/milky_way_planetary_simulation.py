@@ -18,11 +18,12 @@ RED = (188, 39, 50)
 DARK_GREY = (80, 78, 81)
 
 FONT_distance_to_sun_text = pygame.font.SysFont("comicsans", 16)
-FONT_title_text = pygame.font.SysFont("comicsans", 30)
+FONT_title_text = pygame.font.SysFont("comicsans", 28)
 
-title_text = FONT_title_text.render(program_title, True, WHITE)
-# title_text.get_rect()
-# print(title_text.get_rect())
+FPS = 60
+
+title_text = FONT_title_text.render(f"{program_title} - {FPS} fps", True, WHITE)
+print(title_text.get_rect()[2])
 
 
 class Planet:
@@ -141,7 +142,7 @@ def main():
     planets = [sun, mercury, venus, earth, mars]
 
     while run:
-        clock.tick(60)
+        clock.tick(FPS)
         SCREEN.fill((0, 0, 0))
 
         for event in pygame.event.get():
@@ -152,7 +153,7 @@ def main():
             planet.update_position(planets)
             planet.draw(SCREEN)
 
-        SCREEN.blit(title_text, (10, 10))
+        SCREEN.blit(title_text, (5, 5))
         pygame.display.flip()
 
     pygame.quit()
