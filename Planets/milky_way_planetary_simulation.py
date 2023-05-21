@@ -46,7 +46,7 @@ gravity_text = FONT_distance_to_sun_text_stat.render(
     law_of_gravity, 1, BLACK)
 
 background = pygame.image.load("stars.jpg").convert()
-newton = pygame.image.load("Newtons_Gravity_Law_small.png").convert_alpha()
+newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 fps = 60
 
