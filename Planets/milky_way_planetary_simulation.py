@@ -11,14 +11,15 @@ pygame.init()
 WIDTH, HEIGHT = 1300, 900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
-program_title = "Newtonian Planetary Simulation of the Inner Planets"
+program_title = "Newtonian Orbital Simulation of the Inner Planets"
 pygame.display.set_caption(program_title)
 
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 BLUE = (100, 149, 237)
 RED = (188, 39, 50)
-DARK_GREY = (80, 78, 81)
+GRAY = (128, 128, 128)
+DARK_GRAY = (80, 78, 81)
 BLACK = (0, 0, 0)
 
 FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
@@ -42,7 +43,7 @@ abigail_text = FONT_title_text.render(abigail, 1, WHITE)
 
 law_of_gravity = "Law of Gravitation"
 gravity_text = FONT_distance_to_sun_text_stat.render(
-    law_of_gravity, 1, WHITE)
+    law_of_gravity, 1, BLACK)
 
 background = pygame.image.load("stars.jpg").convert()
 newton = pygame.image.load("Newtons_Gravity_Law_small.png").convert_alpha()
@@ -53,7 +54,7 @@ fps = 60
 class Planet:
     AU = 149.6e6 * 1000    # meters
     G = 6.67428e-11
-    SIZE_SCALE = 250 / AU  # 1AU = 100 pixels if 250  250 Pixels per AU
+    SIZE_SCALE = 250 / AU  # 250 Pixels per AU
     TIMESTEP = 3600*24  # 1 day in seconds
     CENTER_OFFSET = 175
     STOP_AFTER = 900  # trial and error
@@ -88,6 +89,8 @@ class Planet:
 
         # draw Planets
         x = self.x * self.SIZE_SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
+        # if self.name == "earth":
+        #     print(x)
         y = self.y * self.SIZE_SCALE + HEIGHT / 2
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
@@ -171,7 +174,7 @@ clock = pygame.time.Clock()
 sun = Planet("sun", 0, 0, 30, YELLOW, 1.98892 * 10**30, 0)
 
 mercury_y_vel_ratio = 1
-mercury = Planet("mercury", 0.387, 0, 8, DARK_GREY,
+mercury = Planet("mercury", 0.387, 0, 8, DARK_GRAY,
                  mercury_y_vel_ratio * 3.30 * 10**23, -47.4 * 1000, mercury_y_vel_ratio)
 
 venus_y_vel_ratio = 1
@@ -215,7 +218,7 @@ while run:
 
     SCREEN.blit(title_text, (150, 5))
 
-    pygame.draw.rect(SCREEN, "gray", (30, 120, 290, 220),
+    pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
                      width=3, border_radius=20)
@@ -225,7 +228,7 @@ while run:
     display_planet_stats(earth, 30, 180)
     display_planet_stats(mars, 30, 220)
 
-    pygame.draw.rect(SCREEN, "gray", (30, 380, 290, 220),
+    pygame.draw.rect(SCREEN, GRAY, (30, 380, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220),
                      width=3, border_radius=20)
@@ -235,16 +238,16 @@ while run:
     SCREEN.blit(pause_text, (50, 490))
     SCREEN.blit(abigail_text, (980, 840))
 
-    pygame.draw.rect(SCREEN, "gray" , (30, 640, 290, 220),
+    pygame.draw.rect(SCREEN, GRAY , (30, 640, 290, 220),
                     width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 640, 290, 220),
                      width=3, border_radius=20)
     SCREEN.blit(gravity_text, (65, 655))
     
     
-    # pygame.draw.rect(SCREEN, DARK_GREY , (30, 640, 290, 220),
+    # pygame.draw.rect(SCREEN, DARK_GRAY , (30, 640, 290, 220),
     #             width=0, border_radius=20)
-    SCREEN.blit(newton,(70, 710))
+    SCREEN.blit(newton,(35, 685))
 
     pygame.display.flip()
 
