@@ -40,8 +40,6 @@ pause = "p          - Pause Toggle"
 pause_text = FONT_distance_to_sun_text.render(pause, 1, BLACK)
 delete_sun = "s          - Remove Sun"
 delete_sun_text = FONT_distance_to_sun_text.render(delete_sun, 1, BLACK)
-delete_earth = "e          - Remove Earth"
-delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, 1, BLACK)
 abigail = "by Abigail Lightle"
 abigail_text = FONT_title_text.render(abigail, 1, WHITE)
 
@@ -61,7 +59,7 @@ class Planet:
     SIZE_SCALE = 250 / AU  # 250 Pixels per AU
     TIMESTEP = 3600*24  # 1 day in seconds
     CENTER_OFFSET = 175
-    STOP_AFTER = 1000  # trial and error
+    STOP_AFTER = 900  # trial and error
 
     def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
         self.name = name
@@ -212,10 +210,7 @@ while run:
                 pause()
             if event.key == pygame.K_s:
                 planets.remove(sun)
-                sun = None
-            if event.key == pygame.K_e:
-                planets.remove(earth)
-                earth = None
+                del sun
 
     for planet in planets:
         planet.update_position(planets)
@@ -233,8 +228,7 @@ while run:
     SCREEN.blit(title_text_stat, (50, 30 + 100))
     display_planet_stats(mercury, 30, 100)
     display_planet_stats(venus, 30, 140)
-    if isinstance(earth, Planet):
-        display_planet_stats(earth, 30, 180)
+    display_planet_stats(earth, 30, 180)
     display_planet_stats(mars, 30, 220)
 
     pygame.draw.rect(SCREEN, GRAY, (30, 380, 290, 220),
@@ -246,8 +240,7 @@ while run:
     SCREEN.blit(action_down_text, (50, 460))
     SCREEN.blit(pause_text, (50, 490))
     SCREEN.blit(delete_sun_text, (50, 520))
-    SCREEN.blit(delete_earth_text, (50, 550))
-
+    
     SCREEN.blit(abigail_text, (980, 840))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 640, 290, 220),
