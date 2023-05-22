@@ -38,8 +38,6 @@ action_down = "Down Arrow - FPS down 5"
 action_down_text = FONT_distance_to_sun_text.render(action_down, 1, BLACK)
 pause = "p          - Pause Toggle"
 pause_text = FONT_distance_to_sun_text.render(pause, 1, BLACK)
-delete_sun = "s          - Remove Sun"
-delete_sun_text = FONT_distance_to_sun_text.render(delete_sun, 1, BLACK)
 abigail = "by Abigail Lightle"
 abigail_text = FONT_title_text.render(abigail, 1, WHITE)
 
@@ -97,15 +95,16 @@ class Planet:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
         # Place names and distance to sun on Planets
+        if self.name != "sun":
+            # distance_text = FONT_distance_to_sun_text.render(
+            #     f"{math.floor(self.distance_to_sun/1000)}km", 1, WHITE)
 
-        planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        win.blit(planet_text, (x - planet_text.get_width()/2,
-                               y - planet_text.get_height()/2 + 2*self.radius))
+            # win.blit(distance_text, (x - distance_text.get_width()/2,
+            #                          y - distance_text.get_height()/2 - 2*self.radius - 5))
 
-        # if self.name != "sun":
-        #     planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        #     win.blit(planet_text, (x - planet_text.get_width()/2,
-        #                            y - planet_text.get_height()/2 + 2*self.radius))
+            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+            win.blit(planet_text, (x - planet_text.get_width()/2,
+                                   y - planet_text.get_height()/2 + 2*self.radius))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -208,9 +207,6 @@ while run:
                 fps += 5
             if event.key == pygame.K_p:
                 pause()
-            if event.key == pygame.K_s:
-                planets.remove(sun)
-                del sun
 
     for planet in planets:
         planet.update_position(planets)
@@ -239,8 +235,6 @@ while run:
     SCREEN.blit(action_up_text, (50, 430))
     SCREEN.blit(action_down_text, (50, 460))
     SCREEN.blit(pause_text, (50, 490))
-    SCREEN.blit(delete_sun_text, (50, 520))
-    
     SCREEN.blit(abigail_text, (980, 840))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 640, 290, 220),
