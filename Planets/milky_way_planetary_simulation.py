@@ -29,31 +29,31 @@ FONT_title_text = pygame.font.SysFont("comicsans", 36)
 FONT_distance_to_sun_text_stat = pygame.font.SysFont(
     "Lucida Sans Typewriter", 20)
 stats_title = "Distance from the Sun"
-title_text_stat = FONT_distance_to_sun_text_stat.render(stats_title, 1, BLACK)
+title_text_stat = FONT_distance_to_sun_text_stat.render(stats_title, True, BLACK)
 
 action_title = "Action Shortcuts"
-action_text = FONT_distance_to_sun_text_stat.render(action_title, 1, BLACK)
+action_text = FONT_distance_to_sun_text_stat.render(action_title, True, BLACK)
 action_up = "Up Arrow   - FPS up 5"
-action_up_text = FONT_distance_to_sun_text.render(action_up, 1, BLACK)
+action_up_text = FONT_distance_to_sun_text.render(action_up, True, BLACK)
 action_down = "Down Arrow - FPS down 5"
-action_down_text = FONT_distance_to_sun_text.render(action_down, 1, BLACK)
+action_down_text = FONT_distance_to_sun_text.render(action_down, True, BLACK)
 pause = "p          - Pause Toggle"
-pause_text = FONT_distance_to_sun_text.render(pause, 1, BLACK)
+pause_text = FONT_distance_to_sun_text.render(pause, True, BLACK)
 delete_sun = "s          - Remove Sun"
-delete_sun_text = FONT_distance_to_sun_text.render(delete_sun, 1, BLACK)
+delete_sun_text = FONT_distance_to_sun_text.render(delete_sun, True, BLACK)
 delete_earth = "e          - Remove Earth"
-delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, 1, BLACK)
+delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, True, BLACK)
 restart = "r          - Reset Orbits"
-restart_text = FONT_distance_to_sun_text.render(restart, 1, BLACK)
+restart_text = FONT_distance_to_sun_text.render(restart, True, BLACK)
 scaled = "All variables scaled accurately except visual size of the Sun and Planets ..."
-scaled_text = FONT_scaled_text.render(scaled, 1, YELLOW)
+scaled_text = FONT_scaled_text.render(scaled, True, YELLOW)
 
 abigail = "by Abigail Lightle"
-abigail_text = FONT_title_text.render(abigail, 1, WHITE)
+abigail_text = FONT_title_text.render(abigail, True, WHITE)
 
 law_of_gravity = "Law of Gravitation"
 gravity_text = FONT_distance_to_sun_text_stat.render(
-    law_of_gravity, 1, BLACK)
+    law_of_gravity, True, BLACK)
 
 background = pygame.image.load("stars.jpg").convert()
 newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
