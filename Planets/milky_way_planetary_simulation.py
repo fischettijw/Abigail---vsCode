@@ -12,7 +12,7 @@ WIDTH, HEIGHT = 1300, 900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 program_title = "Newtonian Orbital Simulation of the Inner Planets"
-pygame.display.set_caption(program_title)
+
 
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
@@ -23,6 +23,7 @@ DARK_GRAY = (80, 78, 81)
 BLACK = (0, 0, 0)
 
 FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
+FONT_scaled_text = pygame.font.SysFont("Lucida Sans Typewriter", 18)
 FONT_title_text = pygame.font.SysFont("comicsans", 36)
 
 FONT_distance_to_sun_text_stat = pygame.font.SysFont(
@@ -44,8 +45,8 @@ delete_earth = "e          - Remove Earth"
 delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, 1, BLACK)
 restart = "r          - Reset Orbits"
 restart_text = FONT_distance_to_sun_text.render(restart, 1, BLACK)
-scaled = "All variables scaled accurately except visual size of the Sun and Planets !"
-scaled_text = FONT_distance_to_sun_text.render(scaled, 1, YELLOW)
+scaled = "All variables scaled accurately except visual size of the Sun and Planets ..."
+scaled_text = FONT_scaled_text.render(scaled, 1, YELLOW)
 
 abigail = "by Abigail Lightle"
 abigail_text = FONT_title_text.render(abigail, 1, WHITE)
@@ -59,6 +60,7 @@ newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 
 fps = 60
+pygame.display.set_caption(f"{program_title} - {fps} fps")
 
 
 class Planet:
@@ -247,8 +249,10 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
                 fps = (fps-5) if fps > 5 else fps
+                pygame.display.set_caption(f"{program_title} - {fps} fps")
             if event.key == pygame.K_UP:
                 fps += 5
+                pygame.display.set_caption(f"{program_title} - {fps} fps")
             if event.key == pygame.K_p:
                 pause()
             if event.key == pygame.K_s:
@@ -265,15 +269,15 @@ while run:
         planet.draw(SCREEN)
 
     title_text = FONT_title_text.render(
-        f"{program_title} - {fps} fps", True, WHITE)
+        f"{program_title} ({365/fps:.3} sim-sec/year)", True, WHITE)
 
-    SCREEN.blit(title_text, (150, 5))
+    SCREEN.blit(title_text, (45, 5))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
                      width=3, border_radius=20)
-    SCREEN.blit(title_text_stat, (50, 30 + 100))
+    SCREEN.blit(title_text_stat, (50, 130))
     display_planet_stats(mercury, 30, 100)
     display_planet_stats(venus, 30, 140)
     if isinstance(earth, Planet):
@@ -292,7 +296,7 @@ while run:
     SCREEN.blit(delete_earth_text, (40, 542))
     SCREEN.blit(restart_text, (40, 570))
 
-    SCREEN.blit(abigail_text, (980, 840))
+    SCREEN.blit(abigail_text, (1000, 850))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 640, 290, 220),
                      width=0, border_radius=20)
@@ -300,7 +304,7 @@ while run:
                      width=3, border_radius=20)
     SCREEN.blit(gravity_text, (65, 655))
     SCREEN.blit(newton, (35, 685))
-    SCREEN.blit(scaled_text, (35, 872))
+    SCREEN.blit(scaled_text, (55, 872))
 
     pygame.display.flip()
 
