@@ -4,3 +4,6 @@
 
 3) What is deterministic versus probabilistic simulation?
 In deterministic models, the output of the model is fully determined by the parameter values and the initial values, whereas probabilistic (or stochastic) models incorporate randomness in their approach. Consequently, the same set of parameter values and initial conditions will lead to a group of different outputs.
+
+4) How does Mercury prove general relativity?
+As Mercury moves toward its perihelion (i.e. closer to the Sun), it moves deeper into the Sun's gravity well. Its motion into this region of greater curvature of space-time causes the perihelion to advance. Einstein's Theory of General Relativity predicts exactly the amount of perihelion advance seen in Mercury.
