@@ -46,7 +46,7 @@ delete_earth = "e          - Remove Earth"
 delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, True, BLACK)
 restart = "r          - Reset Orbits"
 restart_text = FONT_distance_to_sun_text.render(restart, True, BLACK)
-scaled = "All variables scaled accurately except visual size of the Sun ..."
+scaled = "All variables scaled accurately except visual size of the Sun and Planets ..."
 scaled_text = FONT_scaled_text.render(scaled, True, YELLOW)
 
 abigail = "by Abigail Lightle"
@@ -81,11 +81,6 @@ class Planet:
 
         self.radius = rel_radius * Planet.EARTH_SIZE
         self.color = color
-        # if self.name == 'sun':
-        #     self.radius = rel_radius
-        # else:
-        #     self.radius = rel_radius * Planet.EARTH_SIZE
-        # self.color = color
 
         self.mass = mass
 
@@ -226,7 +221,7 @@ def restart():
 run = True
 clock = pygame.time.Clock()
 
-# def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
+# def __init__(self, name, x, y, rel_radius, color, mass, y_vel, y_vel_change=1):
 
 sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)  # 50
 
@@ -281,9 +276,10 @@ while run:
 
     title_text = FONT_title_text.render(
         f"{program_title} ({365/fps:.3} sim-sec/year)", True, WHITE)
-
+    
     SCREEN.blit(title_text, (45, 5))
-
+    
+    
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
@@ -316,7 +312,11 @@ while run:
     SCREEN.blit(gravity_text, (65, 655))
     SCREEN.blit(newton, (35, 685))
     SCREEN.blit(scaled_text, (55, 872))
-
+    
+    fps_display = f"fps - {fps}"
+    fps_text = pygame.font.SysFont("Lucida Sans Typewriter", 28).render(fps_display, True, YELLOW)
+    SCREEN.blit(fps_text, (105, 80))
+    
     pygame.display.flip()
 
 pygame.quit()
