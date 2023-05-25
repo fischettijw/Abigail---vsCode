@@ -64,11 +64,12 @@ pygame.display.set_caption(f"{program_title} - {fps} fps")
 
 
 class Planet:
-    AU = 149.6e6 * 1000    # meters
-    G = 6.67428e-11
+    AU = 149.5978707E9    # meters
+    G = 6.6743e-11
     SIZE_SCALE = 250 / AU  # 250 Pixels per AU
     TIMESTEP = 3600*24  # 1 day in seconds
-    CENTER_OFFSET = 175
+    CENTER_OFFSET_X = 175
+    CENTER_OFFSET_Y = 0
     STOP_AFTER = 1000  # trial and error
 
     def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
@@ -93,8 +94,8 @@ class Planet:
             self.xx = []
             for point in self.orbit:
                 x, y = point
-                x = (x * self.SIZE_SCALE + WIDTH / 2) + Planet.CENTER_OFFSET
-                y = (y * self.SIZE_SCALE + HEIGHT / 2)
+                x = (x * self.SIZE_SCALE + WIDTH / 2)  + Planet.CENTER_OFFSET_X
+                y = (y * self.SIZE_SCALE + HEIGHT / 2) + Planet.CENTER_OFFSET_Y
 
                 if len(updated_points) < Planet.STOP_AFTER:
                     updated_points.append((x, y))
@@ -102,10 +103,8 @@ class Planet:
             pygame.draw.lines(win, self.color, False, updated_points, 2)
 
         # draw Planets
-        x = self.x * self.SIZE_SCALE + WIDTH / 2 + Planet.CENTER_OFFSET
-        # if self.name == "earth":
-        #     print(x)
-        y = self.y * self.SIZE_SCALE + HEIGHT / 2
+        x = self.x * self.SIZE_SCALE + WIDTH / 2 + Planet.CENTER_OFFSET_X
+        y = self.y * self.SIZE_SCALE + HEIGHT / 2 + Planet.CENTER_OFFSET_Y
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
         # Place names on sun and Planets
