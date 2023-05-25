@@ -29,7 +29,8 @@ FONT_title_text = pygame.font.SysFont("comicsans", 36)
 FONT_distance_to_sun_text_stat = pygame.font.SysFont(
     "Lucida Sans Typewriter", 20)
 stats_title = "Distance from the Sun"
-title_text_stat = FONT_distance_to_sun_text_stat.render(stats_title, True, BLACK)
+title_text_stat = FONT_distance_to_sun_text_stat.render(
+    stats_title, True, BLACK)
 
 action_title = "Action Shortcuts"
 action_text = FONT_distance_to_sun_text_stat.render(action_title, True, BLACK)
@@ -45,7 +46,7 @@ delete_earth = "e          - Remove Earth"
 delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, True, BLACK)
 restart = "r          - Reset Orbits"
 restart_text = FONT_distance_to_sun_text.render(restart, True, BLACK)
-scaled = "All variables scaled accurately except visual size of the Sun and Planets ..."
+scaled = "All variables scaled accurately except visual size of the Sun ..."
 scaled_text = FONT_scaled_text.render(scaled, True, YELLOW)
 
 abigail = "by Abigail Lightle"
@@ -71,13 +72,19 @@ class Planet:
     CENTER_OFFSET_X = 175
     CENTER_OFFSET_Y = 0
     STOP_AFTER = 1000  # trial and error
+    EARTH_SIZE = 20
+    SUN_SIZE = 50
 
     def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
         self.name = name
         self.x = x * Planet.AU
         self.y = y
-        self.radius = radius
+        if self.name == 'sun':
+            self.radius = 50
+        else:
+            self.radius = radius * Planet.EARTH_SIZE
         self.color = color
+
         self.mass = mass
 
         self.orbit = []
@@ -94,7 +101,7 @@ class Planet:
             self.xx = []
             for point in self.orbit:
                 x, y = point
-                x = (x * self.SIZE_SCALE + WIDTH / 2)  + Planet.CENTER_OFFSET_X
+                x = (x * self.SIZE_SCALE + WIDTH / 2) + Planet.CENTER_OFFSET_X
                 y = (y * self.SIZE_SCALE + HEIGHT / 2) + Planet.CENTER_OFFSET_Y
 
                 if len(updated_points) < Planet.STOP_AFTER:
@@ -109,14 +116,18 @@ class Planet:
 
         # Place names on sun and Planets
 
-        planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        win.blit(planet_text, (x - planet_text.get_width()/2,
-                               y - planet_text.get_height()/2 + 2*self.radius))
+        # planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+        # win.blit(planet_text, (x - planet_text.get_width()/2,
+        #                        y - planet_text.get_height()/2 + 2*self.radius))
 
-        # if self.name != "sun":
-        #     planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        #     win.blit(planet_text, (x - planet_text.get_width()/2,
-        #                            y - planet_text.get_height()/2 + 2*self.radius))
+        if self.name == "sun":
+            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+            win.blit(planet_text, (x - planet_text.get_width()/2,
+                                   y - planet_text.get_height()/2 + 1.25*self.radius))
+        else:
+            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+            win.blit(planet_text, (x - planet_text.get_width()/2,
+                                   y - planet_text.get_height()/2 + 2*self.radius))            
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -193,7 +204,7 @@ def restart():
 
     print()
     print("="*60)
-    
+
     print(
         f"Mercury: {average_distance(mercury)[1]} - {average_distance(mercury)[2]} - {average_distance(mercury)[0]}")
     print(
@@ -202,7 +213,6 @@ def restart():
         f"Earth: {average_distance(earth)[1]} - {average_distance(earth)[2]} - {average_distance(earth)[0]}")
     print(
         f"Mars: {average_distance(mars)[1]} - {average_distance(mars)[2]} - {average_distance(mars)[0]}")
-    
 
     mercury.orbit = []
     venus.orbit = []
@@ -216,22 +226,22 @@ clock = pygame.time.Clock()
 
 # def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
 
-sun = Planet("sun", 0, 0, 50, YELLOW, 1.98892 * 10**30, 0)
+sun = Planet("sun", 0, 0, 50, YELLOW, 1.98892 * 10**30, 0)  # 50
 
-mercury_y_vel_ratio = 1
-mercury = Planet("mercury", -0.387, 0, 8, DARK_GRAY,
+mercury_y_vel_ratio = 1  # 8
+mercury = Planet("mercury", -0.387, 0, 0.376, DARK_GRAY,
                  3.30 * 10**23, 47.4 * 1000, mercury_y_vel_ratio)
 
-venus_y_vel_ratio = 1
-venus = Planet("venus", -0.723, 0, 14, WHITE,
+venus_y_vel_ratio = 1  # 14
+venus = Planet("venus", -0.723, 0, 0.949, WHITE,
                4.87 * 10**24, 35.02 * 1000, venus_y_vel_ratio)
 
-earth_y_vel_ratio = 1
-earth = Planet("earth", -1, 0, 16, BLUE,
+earth_y_vel_ratio = 1  # 16
+earth = Planet("earth", -1, 0, 1.0, BLUE,
                5.97 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
 
-mars_y_vel_ratio = 1
-mars = Planet("mars", -1.524, 0, 12, RED,
+mars_y_vel_ratio = 1  # 12
+mars = Planet("mars", -1.524, 0, 0.533, RED,
               6.42 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
 
 planets = [sun, mercury, venus, earth, mars]
@@ -277,11 +287,11 @@ while run:
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
                      width=3, border_radius=20)
     SCREEN.blit(title_text_stat, (50, 130))
-    display_planet_stats(mercury, 30, 100)
-    display_planet_stats(venus, 30, 140)
+    display_planet_stats(mercury, 30, 95)
+    display_planet_stats(venus, 30, 138)
     if isinstance(earth, Planet):
-        display_planet_stats(earth, 30, 180)
-    display_planet_stats(mars, 30, 220)
+        display_planet_stats(earth, 30, 181)
+    display_planet_stats(mars, 30, 223)
 
     pygame.draw.rect(SCREEN, GRAY, (30, 380, 290, 220),
                      width=0, border_radius=20)
