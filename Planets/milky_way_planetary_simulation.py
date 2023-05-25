@@ -73,17 +73,19 @@ class Planet:
     CENTER_OFFSET_Y = 0
     STOP_AFTER = 1000  # trial and error
     EARTH_SIZE = 20
-    SUN_SIZE = 50
 
-    def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
+    def __init__(self, name, x, y, rel_radius, color, mass, y_vel, y_vel_change=1):
         self.name = name
         self.x = x * Planet.AU
         self.y = y
-        if self.name == 'sun':
-            self.radius = 50
-        else:
-            self.radius = radius * Planet.EARTH_SIZE
+
+        self.radius = rel_radius * Planet.EARTH_SIZE
         self.color = color
+        # if self.name == 'sun':
+        #     self.radius = rel_radius
+        # else:
+        #     self.radius = rel_radius * Planet.EARTH_SIZE
+        # self.color = color
 
         self.mass = mass
 
@@ -226,7 +228,7 @@ clock = pygame.time.Clock()
 
 # def __init__(self, name, x, y, radius, color, mass, y_vel, y_vel_change=1):
 
-sun = Planet("sun", 0, 0, 50, YELLOW, 1.98892 * 10**30, 0)  # 50
+sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)  # 50
 
 mercury_y_vel_ratio = 1  # 8
 mercury = Planet("mercury", -0.387, 0, 0.376, DARK_GRAY,
