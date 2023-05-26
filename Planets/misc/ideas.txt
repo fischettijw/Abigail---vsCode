@@ -7,3 +7,5 @@ In deterministic models, the output of the model is fully determined by the para
 
 4) How does Mercury prove general relativity?
 As Mercury moves toward its perihelion (i.e. closer to the Sun), it moves deeper into the Sun's gravity well. Its motion into this region of greater curvature of space-time causes the perihelion to advance. Einstein's Theory of General Relativity predicts exactly the amount of perihelion advance seen in Mercury.
+
+5) Create chart for Science Fair Board with all the Physics That is needed. Show equations.
