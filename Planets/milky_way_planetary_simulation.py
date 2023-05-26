@@ -69,7 +69,7 @@ pygame.display.set_caption(f"{program_title} - {fps} fps")
 
 class Planet:
     AU = 149.5978707E9    # meters
-    G = 6.6743e-11
+    G = 6.6743E-11
     SIZE_SCALE = 250 / AU  # 250 Pixels per AU
     TIMESTEP = 3600*24  # 1 day in seconds
     CENTER_OFFSET_X = 175
@@ -114,11 +114,7 @@ class Planet:
         y = self.y * self.SIZE_SCALE + HEIGHT / 2 + Planet.CENTER_OFFSET_Y
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
-        # Place names on sun and Planets
-
-        # planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        # win.blit(planet_text, (x - planet_text.get_width()/2,
-        #                        y - planet_text.get_height()/2 + 2*self.radius))
+        # Place names on Planets & Sun
 
         if self.name == "sun":
             planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)

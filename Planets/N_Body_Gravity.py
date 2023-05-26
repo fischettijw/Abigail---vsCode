@@ -66,7 +66,8 @@ class Body(pygame.sprite.Sprite):
         self.y_vel += value
 
     def update_pos(self):
-        self.rect.center = (round(self.x_pos), round(self.y_pos))
+        if body.color != "Yellow":
+            self.rect.center = (round(self.x_pos), round(self.y_pos))
 
     def animate(self):
         self.change_x_vel(self.x_acc)
@@ -74,7 +75,6 @@ class Body(pygame.sprite.Sprite):
 
         self.change_x_pos(self.x_vel)
         self.change_y_pos(self.y_vel)
-
         self.update_pos()
 
     def gravitate(self, otherbody):
@@ -103,14 +103,20 @@ class Body(pygame.sprite.Sprite):
 
 
 body_group = pygame.sprite.Group()
-BODYCOUNT = 100
+BODYCOUNT = 5
 for i in range(BODYCOUNT):
     if i == 0:
         body_group.add(
-            Body(100, 10, (WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2), "Yellow", .01, 0))
+            Body(100, 10, (WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2), "Yellow", .005, 0))
     else:
         body_group.add(Body(1, 3, (random.randrange(100, WINDOW_SIZE[0]-100),
                                    random.randrange(100, WINDOW_SIZE[0]-100)), "White", 0, 0))
+
+# body_group.add(Body(100, 10, (WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2), "Yellow", .01, 0))
+# body_group.add(Body(1, 3, (300,300), "White", .01, 0))
+# body_group.add(Body(1, 3, (300,700), "White", .01, 0))
+# body_group.add(Body(1, 3, (700,300), "White", .01, 0))
+# body_group.add(Body(1, 3, (700,700), "White", .01, 0))
 
 body_list = list(body_group)
 body_pairs = list(itertools.combinations(body_group, 2))
@@ -131,6 +137,8 @@ while True:
         otherbody.gravitate(body)
         body.animate()
         otherbody.animate()
+
+
         
     
 
