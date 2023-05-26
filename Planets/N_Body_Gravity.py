@@ -18,7 +18,7 @@ BACKGROUND_RECT = BACKGROUND.get_rect(
     center=(WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2))
 
 
-G = 1
+G = 0.2
 
 
 class Body(pygame.sprite.Sprite):
@@ -34,6 +34,7 @@ class Body(pygame.sprite.Sprite):
         self.radius = radius
         self.x_pos = start_position[0]
         self.y_pos = start_position[1]
+        self.color = color
 
         self.x_vel = x_vel
         self.x_acc = 0
@@ -102,10 +103,14 @@ class Body(pygame.sprite.Sprite):
 
 
 body_group = pygame.sprite.Group()
-BODYCOUNT = 10
+BODYCOUNT = 100
 for i in range(BODYCOUNT):
-    body_group.add(Body(1, 3, (random.randrange(100, WINDOW_SIZE[0]-100), 
-                               random.randrange(100, WINDOW_SIZE[0]-100)), "White", 0, 0))
+    if i == 0:
+        body_group.add(
+            Body(100, 10, (WINDOW_SIZE[0]/2, WINDOW_SIZE[1]/2), "Yellow", .01, 0))
+    else:
+        body_group.add(Body(1, 3, (random.randrange(100, WINDOW_SIZE[0]-100),
+                                   random.randrange(100, WINDOW_SIZE[0]-100)), "White", 0, 0))
 
 body_list = list(body_group)
 body_pairs = list(itertools.combinations(body_group, 2))
@@ -126,6 +131,8 @@ while True:
         otherbody.gravitate(body)
         body.animate()
         otherbody.animate()
+        
+    
 
     pygame.display.update()
     CLOCK.tick(60)
