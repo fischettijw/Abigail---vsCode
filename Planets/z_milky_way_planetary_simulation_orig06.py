@@ -1,6 +1,9 @@
 # https://www.youtube.com/watch?v=WTLPmUHTPqo
 # https://www.youtube.com/watch?v=zEQadiUjICY
 # https://www.youtube.com/watch?v=4ycpvtIio-o
+# https://www.youtube.com/watch?v=7rZgC_I9RNA
+# https://www.youtube.com/watch?v=EhDtJxX0sCA
+
 
 import pygame
 import math
@@ -66,7 +69,7 @@ pygame.display.set_caption(f"{program_title} - {fps} fps")
 
 class Planet:
     AU = 149.5978707E9    # meters
-    G = 6.6743e-11
+    G = 6.6743E-11
     SIZE_SCALE = 250 / AU  # 250 Pixels per AU
     TIMESTEP = 3600*24  # 1 day in seconds
     CENTER_OFFSET_X = 175
@@ -111,11 +114,7 @@ class Planet:
         y = self.y * self.SIZE_SCALE + HEIGHT / 2 + Planet.CENTER_OFFSET_Y
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
-        # Place names on sun and Planets
-
-        # planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
-        # win.blit(planet_text, (x - planet_text.get_width()/2,
-        #                        y - planet_text.get_height()/2 + 2*self.radius))
+        # Place names on Planets & Sun
 
         if self.name == "sun":
             planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
@@ -124,7 +123,7 @@ class Planet:
         else:
             planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
             win.blit(planet_text, (x - planet_text.get_width()/2,
-                                   y - planet_text.get_height()/2 + 2*self.radius))            
+                                   y - planet_text.get_height()/2 + 2*self.radius))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -226,7 +225,7 @@ clock = pygame.time.Clock()
 sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)  # 50
 
 mercury_y_vel_ratio = 1  # 8   DARK_GRAY
-mercury = Planet("mercury", -0.387, 0, 0.376 ,DARK_GRAY,
+mercury = Planet("mercury", -0.387, 0, 0.376, DARK_GRAY,
                  3.30 * 10**23, 47.4 * 1000, mercury_y_vel_ratio)
 
 venus_y_vel_ratio = 1  # 14
@@ -277,10 +276,9 @@ while run:
 
     title_text = FONT_title_text.render(
         f"{program_title} ({365/fps:.3} sim-secs/year)", True, WHITE)
-    
+
     SCREEN.blit(title_text, (45, 5))
-    
-    
+
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
@@ -313,14 +311,16 @@ while run:
     SCREEN.blit(gravity_text, (65, 655))
     SCREEN.blit(newton, (35, 685))
     SCREEN.blit(scaled_text, (55, 872))
-    
+
     fps_display = f"fps - {fps}"
-    fps_text = pygame.font.SysFont("Lucida Sans Typewriter", 28).render(fps_display, True, YELLOW)
+    fps_text = pygame.font.SysFont(
+        "Lucida Sans Typewriter", 28).render(fps_display, True, YELLOW)
     SCREEN.blit(fps_text, (105, 80))
-    
-    earth_years_text = pygame.font.SysFont("Lucida Sans Typewriter", 22).render(f"sim-earth years: {ticks/365:.2f}", True, YELLOW)
+
+    earth_years_text = pygame.font.SysFont("Lucida Sans Typewriter", 22).render(
+        f"sim-earth years: {ticks/365:.2f}", True, YELLOW)
     SCREEN.blit(earth_years_text, (40, 55))
-    
+
     pygame.display.flip()
 
 pygame.quit()

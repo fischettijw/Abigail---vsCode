@@ -4,19 +4,23 @@
 # https://www.youtube.com/watch?v=7rZgC_I9RNA
 # https://www.youtube.com/watch?v=EhDtJxX0sCA
 
-
+# obtained IMPORTS
 import pygame
 import math
+from milky_way_helper import *
 import time
 
+# initial pygame and all it's components
 pygame.init()
 
+# define visual output SCREEN
 WIDTH, HEIGHT = 1300, 900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
+# text for caption and SCREEN title
 program_title = "Newtonian Orbital Simulation of the Inner Planets"
 
-
+# create COLORS
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 BLUE = (100, 149, 237)
@@ -25,46 +29,36 @@ GRAY = (128, 128, 128)
 DARK_GRAY = (80, 78, 81)
 BLACK = (0, 0, 0)
 
-FONT_distance_to_sun_text = pygame.font.SysFont("Lucida Sans Typewriter", 16)
-FONT_scaled_text = pygame.font.SysFont("Lucida Sans Typewriter", 18)
-FONT_title_text = pygame.font.SysFont("comicsans", 36)
+# create FONTS
+FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
+FONT_LST_18 = pygame.font.SysFont("Lucida Sans Typewriter", 18)
+FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
+FONT_LST_20 = pygame.font.SysFont("Lucida Sans Typewriter", 20)
 
-FONT_distance_to_sun_text_stat = pygame.font.SysFont(
-    "Lucida Sans Typewriter", 20)
-stats_title = "Distance from the Sun"
-title_text_stat = FONT_distance_to_sun_text_stat.render(
-    stats_title, True, BLACK)
+# create TEXT for visible SCREEN output
+text_stats = FONT_LST_20.render("Distance from the Sun", True, BLACK)
+text_action = FONT_LST_20.render("Action Shortcuts", True, BLACK)
+text_action_up = FONT_LST_16.render("Up Arrow   - FPS up 5", True, BLACK)
+text_action_down = FONT_LST_16.render("Down Arrow - FPS down 5", True, BLACK)
+text_pause = FONT_LST_16.render("p          - Pause Toggle", True, BLACK)
+text_delete_sun = FONT_LST_16.render("s          - Remove Sun", True, BLACK)
+text_earth_delete = FONT_LST_16.render(
+    "e          - Remove Earth", True, BLACK)
+text_restart = FONT_LST_16.render("r          - Reset Orbits", True, BLACK)
+text_scaled = FONT_LST_18.render(
+    "All variables scaled accurately except visual size of the Sun and Planets ...",
+    True, YELLOW)
+text_abigail = FONT_CS_36.render("by Abigail Lightle", True, WHITE)
+text_gravity = FONT_LST_20.render("Law of Gravitation", True, BLACK)
 
-action_title = "Action Shortcuts"
-action_text = FONT_distance_to_sun_text_stat.render(action_title, True, BLACK)
-action_up = "Up Arrow   - FPS up 5"
-action_up_text = FONT_distance_to_sun_text.render(action_up, True, BLACK)
-action_down = "Down Arrow - FPS down 5"
-action_down_text = FONT_distance_to_sun_text.render(action_down, True, BLACK)
-pause = "p          - Pause Toggle"
-pause_text = FONT_distance_to_sun_text.render(pause, True, BLACK)
-delete_sun = "s          - Remove Sun"
-delete_sun_text = FONT_distance_to_sun_text.render(delete_sun, True, BLACK)
-delete_earth = "e          - Remove Earth"
-delete_earth_text = FONT_distance_to_sun_text.render(delete_earth, True, BLACK)
-restart = "r          - Reset Orbits"
-restart_text = FONT_distance_to_sun_text.render(restart, True, BLACK)
-scaled = "All variables scaled accurately except visual size of the Sun and Planets ..."
-scaled_text = FONT_scaled_text.render(scaled, True, YELLOW)
-
-abigail = "by Abigail Lightle"
-abigail_text = FONT_title_text.render(abigail, True, WHITE)
-
-law_of_gravity = "Law of Gravitation"
-gravity_text = FONT_distance_to_sun_text_stat.render(
-    law_of_gravity, True, BLACK)
-
-background = pygame.image.load("stars.jpg").convert()
-newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
-
+# create images for visible SCREEN output
+img_background = pygame.image.load("stars.jpg").convert()
+img_newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 fps = 60
 pygame.display.set_caption(f"{program_title} - {fps} fps")
+
+# create Planet class
 
 
 class Planet:
@@ -77,12 +71,12 @@ class Planet:
     STOP_AFTER = 1000  # trial and error
     EARTH_SIZE = 20
 
-    def __init__(self, name, x, y, rel_radius, color, mass, y_vel, y_vel_change=1):
+    def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
         self.x = x * Planet.AU
         self.y = y
 
-        self.radius = rel_radius * Planet.EARTH_SIZE
+        self.radius = relative_radius * Planet.EARTH_SIZE
         self.color = color
 
         self.mass = mass
@@ -92,7 +86,7 @@ class Planet:
         self.distance_to_sun = 0
 
         self.x_vel = 0
-        self.y_vel = y_vel * y_vel_change
+        self.y_vel = y_vel
 
     def draw(self, win):
         # draw orbits (stop after STOP_AFTER points)
@@ -117,11 +111,11 @@ class Planet:
         # Place names on Planets & Sun
 
         if self.name == "sun":
-            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+            planet_text = FONT_LST_16.render(self.name, 1, WHITE)
             win.blit(planet_text, (x - planet_text.get_width()/2,
                                    y - planet_text.get_height()/2 + 1.25*self.radius))
         else:
-            planet_text = FONT_distance_to_sun_text.render(self.name, 1, WHITE)
+            planet_text = FONT_LST_16.render(self.name, 1, WHITE)
             win.blit(planet_text, (x - planet_text.get_width()/2,
                                    y - planet_text.get_height()/2 + 2*self.radius))
 
@@ -162,12 +156,12 @@ class Planet:
 
 
 def display_planet_stats(planet, x, y):
-    planet_text = FONT_distance_to_sun_text.render(planet.name, 1, BLACK)
+    planet_text = FONT_LST_16.render(planet.name, 1, BLACK)
     SCREEN.blit(planet_text, (x + 60, 80 + y))
     pygame.draw.circle(SCREEN, planet.color, (10 + 50, 88 + y), planet.radius)
 
     space = " " if planet.name == "mercury" else ""
-    distance_text = FONT_distance_to_sun_text.render(
+    distance_text = FONT_LST_16.render(
         f"{space}{math.floor(planet.distance_to_sun/1000)} km", 1, BLACK)
     SCREEN.blit(distance_text, (x + 150, 83 + y))
 
@@ -215,39 +209,36 @@ def restart():
     earth.orbit = []
     mars.orbit = []
 
+#################################################################################
+# main program start
+# def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
 
-# main program start   ======================================================
-run = True
-clock = pygame.time.Clock()
+# create Plaent instances of Sun and Planets
+sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)
 
-# def __init__(self, name, x, y, rel_radius, color, mass, y_vel, y_vel_change=1):
-
-sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)  # 50
-
-mercury_y_vel_ratio = 1  # 8   DARK_GRAY
 mercury = Planet("mercury", -0.387, 0, 0.376, DARK_GRAY,
-                 3.30 * 10**23, 47.4 * 1000, mercury_y_vel_ratio)
+                 3.30 * 10**23, 47.4 * 1000)
 
-venus_y_vel_ratio = 1  # 14
 venus = Planet("venus", -0.723, 0, 0.949, WHITE,
-               4.87 * 10**24, 35.02 * 1000, venus_y_vel_ratio)
+               4.87 * 10**24, 35.02 * 1000)
 
-earth_y_vel_ratio = 1  # 16
 earth = Planet("earth", -1, 0, 1.0, BLUE,
-               5.97 * 10**24, 29.783 * 1000, earth_y_vel_ratio)
+               5.97 * 10**24, 29.783 * 1000)
 
-mars_y_vel_ratio = 1  # 12
 mars = Planet("mars", -1.524, 0, 0.533, RED,
-              6.42 * 10**23, 24.077 * 1000, mars_y_vel_ratio)
+              6.42 * 10**23, 24.077 * 1000)
 
 planets = [sun, mercury, venus, earth, mars]
 
 ticks = 0
+clock = pygame.time.Clock()
+run = True
+
 while run:
     clock.tick(fps)
     ticks += 1
-    # SCREEN.fill((0, 0, 0))
-    SCREEN.blit(background, (0, 0))
+
+    SCREEN.blit(img_background, (0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -274,16 +265,16 @@ while run:
         planet.update_position(planets)
         planet.draw(SCREEN)
 
-    title_text = FONT_title_text.render(
+    text_title = FONT_CS_36.render(
         f"{program_title} ({365/fps:.3} sim-secs/year)", True, WHITE)
 
-    SCREEN.blit(title_text, (45, 5))
+    SCREEN.blit(text_title, (45, 5))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
                      width=3, border_radius=20)
-    SCREEN.blit(title_text_stat, (50, 130))
+    SCREEN.blit(text_stats, (50, 130))
     display_planet_stats(mercury, 30, 95)
     display_planet_stats(venus, 30, 138)
     if isinstance(earth, Planet):
@@ -294,23 +285,23 @@ while run:
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220),
                      width=3, border_radius=20)
-    SCREEN.blit(action_text, (85, 390))
-    SCREEN.blit(action_up_text, (40, 430))
-    SCREEN.blit(action_down_text, (40, 458))
-    SCREEN.blit(pause_text, (40, 486))
-    SCREEN.blit(delete_sun_text, (40, 514))
-    SCREEN.blit(delete_earth_text, (40, 542))
-    SCREEN.blit(restart_text, (40, 570))
+    SCREEN.blit(text_action, (85, 390))
+    SCREEN.blit(text_action_up, (40, 430))
+    SCREEN.blit(text_action_down, (40, 458))
+    SCREEN.blit(text_pause, (40, 486))
+    SCREEN.blit(text_delete_sun, (40, 514))
+    SCREEN.blit(text_earth_delete, (40, 542))
+    SCREEN.blit(text_restart, (40, 570))
 
-    SCREEN.blit(abigail_text, (1000, 850))
+    # SCREEN.blit(text_abigail, (1000, 850))
 
     pygame.draw.rect(SCREEN, GRAY, (30, 640, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 640, 290, 220),
                      width=3, border_radius=20)
-    SCREEN.blit(gravity_text, (65, 655))
-    SCREEN.blit(newton, (35, 685))
-    SCREEN.blit(scaled_text, (55, 872))
+    SCREEN.blit(text_gravity, (65, 655))
+    SCREEN.blit(img_newton, (35, 685))
+    SCREEN.blit(text_scaled, (55, 872))
 
     fps_display = f"fps - {fps}"
     fps_text = pygame.font.SysFont(
