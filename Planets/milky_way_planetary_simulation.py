@@ -32,8 +32,10 @@ BLACK = (0, 0, 0)
 # create FONTS
 FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 FONT_LST_18 = pygame.font.SysFont("Lucida Sans Typewriter", 18)
-FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
 FONT_LST_20 = pygame.font.SysFont("Lucida Sans Typewriter", 20)
+FONT_LST_22 = pygame.font.SysFont("Lucida Sans Typewriter", 22)
+FONT_LST_28 = pygame.font.SysFont("Lucida Sans Typewriter", 28)
+FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
 
 # create TEXT for visible SCREEN output
 text_stats = FONT_LST_20.render("Distance from the Sun", True, BLACK)
@@ -56,11 +58,11 @@ img_background = pygame.image.load("stars.jpg").convert()
 img_newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 fps = 60
-pygame.display.set_caption(f"{program_title} - {fps} fps")
+pygame.display.set_caption(
+    f"{program_title} - Science Fair 2023-24 by Abigail M. Lightle")
+
 
 # create Planet class
-
-
 class Planet:
     AU = 149.5978707E9    # meters
     G = 6.6743E-11
@@ -213,6 +215,7 @@ def restart():
 # main program start
 # def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
 
+
 # create Plaent instances of Sun and Planets
 sun = Planet("sun", 0, 0, 2.5, YELLOW, 1.98892 * 10**30, 0)
 
@@ -234,7 +237,7 @@ ticks = 0
 clock = pygame.time.Clock()
 run = True
 
-while run:
+while run:  # START OF GAME LOOP   ################
     clock.tick(fps)
     ticks += 1
 
@@ -246,10 +249,12 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_DOWN:
                 fps = (fps-5) if fps > 5 else fps
-                pygame.display.set_caption(f"{program_title} - {fps} fps")
+                pygame.display.set_caption(
+                    f"{program_title} - Science Fair 2023-24 by Abigail M. Lightle")
             if event.key == pygame.K_UP:
                 fps += 5
-                pygame.display.set_caption(f"{program_title} - {fps} fps")
+                pygame.display.set_caption(
+                    f"{program_title} - Science Fair 2023-24 by Abigail M. Lightle")
             if event.key == pygame.K_p:
                 pause()
             if event.key == pygame.K_s:
@@ -269,7 +274,9 @@ while run:
         f"{program_title} ({365/fps:.3} sim-secs/year)", True, WHITE)
 
     SCREEN.blit(text_title, (45, 5))
+    SCREEN.blit(text_abigail, (1000, 850))
 
+    # RECTANGLE: distance from the sun
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 120, 290, 220),
@@ -281,6 +288,7 @@ while run:
         display_planet_stats(earth, 30, 181)
     display_planet_stats(mars, 30, 223)
 
+    # RECTANGLE: actions shortcuts
     pygame.draw.rect(SCREEN, GRAY, (30, 380, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 380, 290, 220),
@@ -293,8 +301,7 @@ while run:
     SCREEN.blit(text_earth_delete, (40, 542))
     SCREEN.blit(text_restart, (40, 570))
 
-    # SCREEN.blit(text_abigail, (1000, 850))
-
+    # RECTANGLE: law of gavitation
     pygame.draw.rect(SCREEN, GRAY, (30, 640, 290, 220),
                      width=0, border_radius=20)
     pygame.draw.rect(SCREEN, WHITE, (30, 640, 290, 220),
@@ -303,18 +310,19 @@ while run:
     SCREEN.blit(img_newton, (35, 685))
     SCREEN.blit(text_scaled, (55, 872))
 
-    fps_display = f"fps - {fps}"
-    fps_text = pygame.font.SysFont(
-        "Lucida Sans Typewriter", 28).render(fps_display, True, YELLOW)
-    SCREEN.blit(fps_text, (105, 80))
-
-    earth_years_text = pygame.font.SysFont("Lucida Sans Typewriter", 22).render(
+    # sim-earth years
+    text_earth_years = FONT_LST_22.render(
         f"sim-earth years: {ticks/365:.2f}", True, YELLOW)
-    SCREEN.blit(earth_years_text, (40, 55))
+    SCREEN.blit(text_earth_years, (40, 55))
+
+
+    # fps
+    text_fps = FONT_LST_28.render(f"fps - {fps}", True, YELLOW)
+    SCREEN.blit(text_fps, (105, 80))
+
 
     pygame.display.flip()
 
+#####################   END OF GAME LOOP   #####################
+
 pygame.quit()
-
-
-# main()p

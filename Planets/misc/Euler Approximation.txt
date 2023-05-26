@@ -1,0 +1,3 @@
+What is Euler's method for dummies?
+
+Euler's Method, is a technique used to analyze a Differential Equation, which uses the idea of local linearity or linear approximation, where we use small tangent lines over a short distance to approximate the solution to an initial-value problem.Apr 17, 2023
