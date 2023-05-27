@@ -10,9 +10,6 @@ import math
 from milky_way_helper import *
 import time
 
-import os
-os.system('cls')
-
 # initial pygame and all it's components
 pygame.init()
 
@@ -75,7 +72,6 @@ class Planet:
     CENTER_OFFSET_Y = 0
     STOP_AFTER = 1000  # trial and error
     EARTH_SIZE = 20
-    EARTH_VELOCITY = 29783
 
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
@@ -88,25 +84,17 @@ class Planet:
         self.mass = mass
 
         self.orbit = []
+        self.xx = []
         self.distance_to_sun = 0
 
         self.x_vel = 0
         self.y_vel = y_vel
 
-        # if self.name != "sun":
-        #     self.time_per_revolution = abs(1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
-        #     print(self.name, self.time_per_revolution)
-
-    def years_per_revolution(self):
-        if self.name != "sun":
-            self.time_per_revolution = abs(
-                1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
-            return self.name, self.time_per_revolution
-
     def draw(self, win):
         # draw orbits (stop after STOP_AFTER points)
         if len(self.orbit) > 1:
             updated_points = []
+            self.xx = []
             for point in self.orbit:
                 x, y = point
                 x = (x * self.SIZE_SCALE + WIDTH / 2) + Planet.CENTER_OFFSET_X
@@ -278,14 +266,9 @@ while run:  # START OF GAME LOOP   ################
             if event.key == pygame.K_r:
                 restart()
 
-    planet_rev = 0
     for planet in planets:
         planet.update_position(planets)
         planet.draw(SCREEN)
-        if ticks % 360 == 0:
-            planet_rev = planet.years_per_revolution()
-            if planet_rev != None and planet_rev[0] == 'earth':
-                print(planet_rev[1]*(365/fps))
 
     text_title = FONT_CS_36.render(
         f"{program_title} ({365/fps:.3} sim-secs/year)", True, WHITE)
@@ -332,9 +315,11 @@ while run:  # START OF GAME LOOP   ################
         f"sim-earth years: {ticks/365:.2f}", True, YELLOW)
     SCREEN.blit(text_earth_years, (40, 55))
 
+
     # fps
     text_fps = FONT_LST_28.render(f"fps - {fps}", True, YELLOW)
     SCREEN.blit(text_fps, (105, 80))
+
 
     pygame.display.flip()
 

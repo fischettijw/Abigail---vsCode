@@ -1,0 +1,6 @@
+How was general relativity able to predict Mercury's orbit?
+Because the planet Mercury is so close to the Sun and feels the Sun's strong gravity, Mercury's orbit has provided important tests of Einstein's theory of gravity and general relativity. Mercury's orbit precesses more than expected from Newton's law of gravity, but behaves just as predicted by general relativity.
+
+
+https://imagine.gsfc.nasa.gov/educators/programs/cosmictimes/educators/workshops/docs/InquiringIntoNatureUniverse/Newton_Einstein_FactCards.pdf
+
