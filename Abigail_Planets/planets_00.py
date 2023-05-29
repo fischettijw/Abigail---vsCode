@@ -9,6 +9,8 @@ pygame.init()
 
 WIDTH, HEIGHT = (1300, 900)
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+Planet.WIDTH = WIDTH
+Planet.HEIGHT = HEIGHT
 
 
 program_title = "Newtonian Orbital Simulation of the Inner Planets"
@@ -46,6 +48,7 @@ pygame.display.set_caption(
     f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
 ticks = 0
 run = True
+
 #################  START GAME LOOP  ###############
 while run == True:
     CLOCK.tick(fps)
@@ -67,7 +70,6 @@ while run == True:
         planet.draw(SCREEN)
 
     pygame.display.flip()
-
-
 #################  END GAME LOOP ###############
+
 pygame.quit()
