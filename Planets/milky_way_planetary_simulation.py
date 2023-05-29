@@ -80,7 +80,7 @@ class Planet:
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
         self.x = x * Planet.AU
-        self.y = y
+        self.y = y * Planet.AU
 
         self.radius = relative_radius * Planet.EARTH_SIZE
         self.color = color
@@ -192,6 +192,8 @@ def pause():
                     paused = False
 
 
+
+
 def restart():
 
     def average_distance(plant):
@@ -245,6 +247,38 @@ mars = Planet("mars", -1.524, 0, 0.533, RED,
 
 planets = [sun, mercury, venus, earth, mars]
 
+
+def data():
+    clock.tick(fps)
+    show_data = True
+    while show_data:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    show_data = False
+
+        SCREEN.fill('Red')
+
+        text_title = FONT_CS_36.render(
+            f"{program_title}", True, WHITE)
+
+        SCREEN.blit(text_title, (200, 5))
+        SCREEN.blit(text_abigail, (1000, 845))
+
+        planet_rev = earth.years_per_revolution()
+        planet_rec_text = FONT_CS_36.render(
+            planet_rev[0] + "  " + str(planet_rev[1]), True, WHITE)
+        SCREEN.blit(planet_rec_text, (200, 100))
+
+        pygame.display.flip()
+
+
+
+
+
 ticks = 0
 clock = pygame.time.Clock()
 run = True
@@ -277,21 +311,23 @@ while run:  # START OF GAME LOOP   ################
                 earth = None
             if event.key == pygame.K_r:
                 restart()
+            if event.key == pygame.K_d:
+                data()
 
     planet_rev = 0
     for planet in planets:
         planet.update_position(planets)
         planet.draw(SCREEN)
-        if ticks % 360 == 0:
-            planet_rev = planet.years_per_revolution()
-            if planet_rev != None and planet_rev[0] == 'earth':
-                print(planet_rev[1]*(365/fps))
+        # if ticks % 360 == 0:
+        #     planet_rev = planet.years_per_revolution()
+        #     if planet_rev != None and planet_rev[0] == 'earth':
+        #         print(planet_rev[1]*(365/fps))
 
     text_title = FONT_CS_36.render(
         f"{program_title} ({365/fps:.3} sim-secs/year)", True, WHITE)
 
     SCREEN.blit(text_title, (45, 5))
-    SCREEN.blit(text_abigail, (1000, 850))
+    SCREEN.blit(text_abigail, (1000, 845))
 
     # RECTANGLE: distance from the sun
     pygame.draw.rect(SCREEN, GRAY, (30, 120, 290, 220),
