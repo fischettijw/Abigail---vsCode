@@ -124,14 +124,10 @@ class Planet:
 
         # Place names on Planets & Sun
 
-        if self.name == "sun":
-            planet_text = FONT_LST_16.render(self.name, 1, WHITE)
-            win.blit(planet_text, (x - planet_text.get_width()/2,
-                                   y - planet_text.get_height()/2 + 1.25*self.radius))
-        else:
-            planet_text = FONT_LST_16.render(self.name, 1, WHITE)
-            win.blit(planet_text, (x - planet_text.get_width()/2,
-                                   y - planet_text.get_height()/2 + 2*self.radius))
+        planet_text = FONT_LST_16.render(self.name, 1, WHITE)
+        below = 1.25 if self.name == "sun" else 2.0
+        win.blit(planet_text, (x - planet_text.get_width()/2,
+                               y - planet_text.get_height()/2 + below*self.radius))
 
     def attraction(self, other):
         other_x, other_y = other.x, other.y
@@ -190,8 +186,6 @@ def pause():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     paused = False
-
-
 
 
 def restart():
@@ -274,9 +268,6 @@ def data():
         SCREEN.blit(planet_rec_text, (200, 100))
 
         pygame.display.flip()
-
-
-
 
 
 ticks = 0
