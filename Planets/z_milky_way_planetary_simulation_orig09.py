@@ -7,7 +7,7 @@
 # obtained IMPORTS
 import pygame
 import math
-# from milky_way_helper import *
+from milky_way_helper import *
 import time
 
 import os
@@ -18,7 +18,6 @@ pygame.init()
 
 # define visual output SCREEN
 WIDTH, HEIGHT = 1300, 900
-
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # text for caption and SCREEN title
@@ -124,6 +123,7 @@ class Planet:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
         # Place names on Planets & Sun
+
         planet_text = FONT_LST_16.render(self.name, 1, WHITE)
         below = 1.25 if self.name == "sun" else 2.0
         win.blit(planet_text, (x - planet_text.get_width()/2,
