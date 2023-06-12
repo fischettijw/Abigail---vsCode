@@ -107,3 +107,5 @@ class Planet():
         # (stop after STOP_AFTER points)
         if len(self.orbit) < Planet.STOP_AFTER:
             self.orbit.append((self.x, self.y))
+            
+            
