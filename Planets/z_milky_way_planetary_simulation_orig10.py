@@ -98,7 +98,7 @@ class Planet:
         #     self.time_per_revolution = abs(1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
         #     print(self.name, self.time_per_revolution)
 
-    def earth_years_per_revolution(self):
+    def years_per_revolution(self):
         if self.name != "sun":
             self.time_per_revolution = abs(
                 1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
@@ -257,31 +257,15 @@ def data():
         SCREEN.fill('Red')
 
         text_title = FONT_CS_36.render(
-            f"{program_title}\n\n           Revolutions per Earth Years", True, BLACK)
+            f"{program_title}", True, WHITE)
 
         SCREEN.blit(text_title, (200, 5))
         SCREEN.blit(text_abigail, (1000, 845))
 
-        planet_rev = mercury.earth_years_per_revolution()
+        planet_rev = earth.years_per_revolution()
         planet_rec_text = FONT_CS_36.render(
-            planet_rev[0] + "  " + str(planet_rev[1]), True, BLACK)
-        SCREEN.blit(planet_rec_text, (200, 250))
-        
-        planet_rev = venus.earth_years_per_revolution()
-        planet_rec_text = FONT_CS_36.render(
-            planet_rev[0] + "  " + str(planet_rev[1]), True, BLACK)
-        SCREEN.blit(planet_rec_text, (200, 350))        
-
-        planet_rev = earth.earth_years_per_revolution()
-        planet_rec_text = FONT_CS_36.render(
-            planet_rev[0] + "  " + str(planet_rev[1]), True, BLACK)
-        SCREEN.blit(planet_rec_text, (200, 450))
-        
-        planet_rev = mars.earth_years_per_revolution()
-        planet_rec_text = FONT_CS_36.render(
-            planet_rev[0] + "  " + str(planet_rev[1]), True, BLACK)
-        SCREEN.blit(planet_rec_text, (200, 550))        
-
+            planet_rev[0] + "  " + str(planet_rev[1]), True, WHITE)
+        SCREEN.blit(planet_rec_text, (200, 100))
 
         pygame.display.flip()
 

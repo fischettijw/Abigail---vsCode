@@ -15,10 +15,6 @@ class Planet():
     WIDTH = None
     HEIGHT = None 
     STOP_AFTER = 1000  # trial and error
-
-    
-    
-    
     
     # create COLORS
     WHITE = (255, 255, 255)
@@ -29,7 +25,7 @@ class Planet():
     DARK_GRAY = (80, 78, 81)
     BLACK = (0, 0, 0)    
     
-    # create FONTS
+    # # create FONTS
     FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
