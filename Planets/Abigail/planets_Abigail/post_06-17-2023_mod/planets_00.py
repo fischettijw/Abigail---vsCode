@@ -61,6 +61,7 @@ while run == True:
     for planet in planets:
         planet.update_position(planets)
         planet.draw(SCREEN)
+        planet.draw_orbit(SCREEN)
       
     pygame.display.flip()
 

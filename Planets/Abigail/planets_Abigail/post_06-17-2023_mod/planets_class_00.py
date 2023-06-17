@@ -85,7 +85,7 @@ class Planet():
 
     def draw(self, win):
         
-        Planet.draw_orbit(self,win)
+        # Planet.draw_orbit(self,win)
         
         x = (self.x * Planet.SIZE_SCALE) + Planet.WIDTH/2 + Planet.CENTER_OFFSET_X
         y = (self.y * Planet.SIZE_SCALE) + Planet.HEIGHT/2 + Planet.CENTER_OFFSET_Y
@@ -103,8 +103,8 @@ class Planet():
             updated_points = []
             for point in self.orbit:
                 x, y = point
-                x = (x * self.SIZE_SCALE + Planet.WIDTH / 2) + Planet.CENTER_OFFSET_X
-                y = (y * self.SIZE_SCALE + Planet.HEIGHT / 2) + Planet.CENTER_OFFSET_Y
+                x = (x * Planet.SIZE_SCALE + Planet.WIDTH / 2) + Planet.CENTER_OFFSET_X
+                y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + Planet.CENTER_OFFSET_Y
 
                 if len(updated_points) < Planet.STOP_AFTER:
                     updated_points.append((x, y))
