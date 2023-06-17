@@ -101,8 +101,6 @@ while run == True:
     SCREEN.blit(img_background, (0, 0))
 
 
-
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False

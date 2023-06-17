@@ -25,8 +25,9 @@ class Planet():
     DARK_GRAY = (80, 78, 81)
     BLACK = (0, 0, 0)    
     
-    # # create FONTS
+    # create FONTS
     FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
+    
 
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
@@ -82,7 +83,7 @@ class Planet():
         if other.name == "Sun":
             self.distance_to_sun = distance
 
-        force = self.G * self.mass * other.mass / distance**2
+        force = Planet.G * self.mass * other.mass / distance**2
         theta = math.atan2(distance_y, distance_x)
         force_x = math.cos(theta) * force
         force_y = math.sin(theta) * force

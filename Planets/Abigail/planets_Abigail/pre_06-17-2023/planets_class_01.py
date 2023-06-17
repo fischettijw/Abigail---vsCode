@@ -29,7 +29,6 @@ class Planet():
     # # create FONTS
     FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
 
-
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
         self.x = x * Planet.AU
