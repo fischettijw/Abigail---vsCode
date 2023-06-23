@@ -4,6 +4,7 @@ import math
 pygame.init()
 
 class Planet():
+    # class constants
     AU = 149.5978707E9   # meters
     G = 6.6743E-11
     SIZE_SCALE = 250/AU     # 250 pixels per AU
@@ -27,6 +28,7 @@ class Planet():
     
     # create FONTS
     FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
+    FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
     
 
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
@@ -39,7 +41,7 @@ class Planet():
 
         self.mass = mass
 
-        self.orbit = []
+        self.orbit = [(self.x, self.y)]
         self.distance_to_sun = 0
 
         self.x_vel = 0
@@ -98,15 +100,15 @@ class Planet():
                                y - planet_text.get_height()/2 + below * self.radius))
         
     def draw_orbit(self,win):
-                # draw orbits (stop after STOP_AFTER points)
-        if len(self.orbit) > 1:
-            updated_points = []
-            for point in self.orbit:
-                x, y = point
-                x = (x * Planet.SIZE_SCALE + Planet.WIDTH / 2) + Planet.CENTER_OFFSET_X
-                y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + Planet.CENTER_OFFSET_Y
+        # draw orbits (stop after STOP_AFTER points)
+        # if len(self.orbit) > 1:
+        updated_points = []
+        for point in self.orbit:
+            x, y = point
+            x = (x * Planet.SIZE_SCALE + Planet.WIDTH / 2) + Planet.CENTER_OFFSET_X
+            y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + Planet.CENTER_OFFSET_Y
 
-                if len(updated_points) < Planet.STOP_AFTER:
-                    updated_points.append((x, y))
+            if len(updated_points) < Planet.STOP_AFTER:
+                updated_points.append((x, y))
 
-            pygame.draw.lines(win, self.color, False, updated_points, 2)
+        pygame.draw.lines(win, self.color, False, updated_points, 2)

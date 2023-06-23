@@ -1,0 +1,14 @@
+Why does newtonian physis do a poor job of describing Mercury's orbit
+
+
+Newtonian physics, also known as classical mechanics, is a highly accurate and powerful framework for describing the motion of objects under everyday conditions. However, when it comes to describing the orbit of Mercury, Newtonian physics falls short in explaining certain observed phenomena. The primary reason for this discrepancy is the influence of general relativity, Albert Einstein's theory of gravity, which provides a more precise description of gravitational interactions.
+
+In Newtonian physics, gravity is considered a force that acts instantaneously over a distance. According to Newton's law of universal gravitation, the force between two objects depends on their masses and the distance between them. However, Newton's theory assumes that gravity propagates at an infinite speed, which is not entirely accurate.
+
+General relativity, on the other hand, describes gravity as the curvature of spacetime caused by massive objects. In the presence of a massive body like the Sun, spacetime is curved, and objects moving near it will follow curved paths. This curvature affects the motion of Mercury in a significant way.
+
+Mercury's orbit is highly elliptical, meaning it is elongated and not perfectly circular. As Mercury moves closer to the Sun, the gravitational force it experiences becomes stronger. According to Newtonian physics, this should cause Mercury's orbit to precess (rotate) slowly over time. However, precise observations showed that the precession of Mercury's orbit was not consistent with the predictions of Newtonian physics.
+
+Einstein's general theory of relativity provided an explanation for this deviation. It showed that the curvature of spacetime caused by the Sun's mass affects the motion of Mercury's orbit. The curvature of spacetime near the Sun causes the orbit to precess at a rate that agrees with observations. This effect is known as the "precession of the perihelion" of Mercury's orbit.
+
+In summary, Newtonian physics fails to accurately describe Mercury's orbit because it does not account for the curvature of spacetime caused by the Sun's mass, as described by general relativity. General relativity provides a more precise and accurate explanation for the observed motion of Mercury.
