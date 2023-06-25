@@ -30,12 +30,13 @@ text_delete_sun = Planet.FONT_LST_16.render("s          - Delete Sun", True, Pla
 text_scaled = Planet.FONT_LST_18.render(
     "All variables scaled accurately except visual size of the Sun and Planets ...",
     True, Planet.YELLOW)
+text_last_shortcut = Planet.FONT_LST_16.render("?          - Last Shortcut", True, Planet.BLACK)
 
 
 text_gravity = Planet.FONT_LST_20.render(
     "Law of Gravitation", True, Planet.BLACK)  # FIX FONT SIZE
 
-# create images for visible SCREEN output
+# display starry background
 img_background = pygame.image.load("stars.jpg").convert()
 # img_newton = pygame.image.load("Newtons_Gravity_Law.png")
 img_newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
@@ -86,7 +87,7 @@ while run == True:
     pygame.draw.rect(SCREEN, Planet.WHITE, (30, 120, 290, 220),
                      width=3, border_radius=20)
 
-    # Display Planet Stats
+    # Display Planet Distance to Sun
     mercury.display_distance_to_sun(SCREEN, 0, 95)
     venus.display_distance_to_sun(SCREEN, 0, 138)
     earth.display_distance_to_sun(SCREEN, 0, 181)
@@ -102,6 +103,7 @@ while run == True:
     SCREEN.blit(text_pause, (40, 486))
     SCREEN.blit(text_orbit, (40, 514))
     SCREEN.blit(text_delete_sun, (40, 542))
+    SCREEN.blit(text_last_shortcut, (40, 570))
     
 
     # RECTANGLE (Law Of Gravitation)
@@ -112,12 +114,15 @@ while run == True:
     SCREEN.blit(img_newton, (35, 685))
     SCREEN.blit(text_scaled, (55, 872))
 
+
     # BLIT Text to Screen
     SCREEN.blit(title_text, (225, 5))
     SCREEN.blit(abigail_text, (980, 840))
     SCREEN.blit(text_stats, (50, 130))
     SCREEN.blit(text_shortcuts, (65, 390))
     SCREEN.blit(text_gravity, (78, 650))
+    pygame.display.set_caption(
+    f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -125,10 +130,16 @@ while run == True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 pause()
-            if event.key == pygame.K_d:
-                pass
+            if event.key == pygame.K_DOWN:
+                fps = (fps-5) if fps > 5 else fps
+            if event.key == pygame.K_UP:
+                fps = (fps+5)
             if event.key == pygame.K_o:
                 show_orbits = not show_orbits
+            if event.key == pygame.K_s:
+                planets.remove(sun)
+                sun = None
+            
 
     # planets = [sun, mercury, venus, earth, mars]
     for planet in planets:
