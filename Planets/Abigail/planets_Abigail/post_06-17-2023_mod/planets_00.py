@@ -19,7 +19,8 @@ Planet.HEIGHT = HEIGHT
 # create TEXT for visible SCREEN output
 program_title = "Newtonian Orbital Simulation of the Inner Planets"
 title_text = Planet.FONT_CS_36.render(program_title, True, Planet.WHITE)
-abigail_text = Planet.FONT_CS_36.render("By: Abigail M. Lightle", True, Planet.WHITE)
+abigail_text = Planet.FONT_CS_36.render(
+    "By: Abigail M. Lightle", True, Planet.WHITE)
 
 # create images for visible SCREEN output
 img_background = pygame.image.load("stars.jpg").convert()
@@ -31,9 +32,9 @@ mercury = Planet("Mercury", -0.387, 0, 0.376, Planet.DARK_GRAY, 3.30e23, 47000)
 venus = Planet("Venus", -0.723, 0, 0.949, Planet.WHITE, 4.87E24, 35020)
 earth = Planet("Earth", -1, 0, 1.0, Planet.BLUE, 5.97E24, 29783)
 mars = Planet("Mars", -1.524, 0, 0.533, Planet.RED, 6.42E23, 24077)
+planets = [sun, earth, venus, mars, mercury]
 # jupiter = Planet("Jupiter", -5, 0,(142984/12104),"brown",1898E24,13.1)
 # planets = [sun, earth, venus, mars, mercury, jupiter]
-planets = [sun, earth, venus, mars, mercury]
 
 fps = 60
 pygame.display.set_caption(
@@ -61,13 +62,15 @@ while run == True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_o:
                 show_orbits = not show_orbits
+                for planet in planets:
+                    planet.orbit = [(planet.x, planet.y)]
 
     for planet in planets:
         planet.update_position(planets)
         planet.draw(SCREEN)
         if show_orbits:
             planet.draw_orbit(SCREEN)
-      
+
     pygame.display.flip()
 
 #################  END GAME LOOP ###############
