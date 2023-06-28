@@ -2,7 +2,7 @@ import pygame
 
 import os
 import math
-from planet_class_ORIG import Planet      # from planets_class_00 import Planet
+from planet_class import Planet
 
 os.system('cls')
 
@@ -17,13 +17,23 @@ Planet.HEIGHT = HEIGHT
 program_title = "Newtonian Orbital Simulation of the Inner Planets"
 title_text = Planet.FONT_CS_36.render(program_title, True, Planet.WHITE)
 abigail_text = Planet.FONT_CS_36.render("By: Abigail Lightle", True, Planet.WHITE)
-text_stats = Planet.FONT_LST_32.render("Distance from the Sun", True, Planet.BLACK)
-text_shortcuts = Planet.FONT_LST_32.render("Keyboard Shortcuts", True, Planet.BLACK)
-text_gravity = Planet.FONT_LST_32.render("Law of Gravitation", True, Planet.BLACK)
+text_stats = Planet.FONT_LST_20.render("Distance from the Sun", True, Planet.BLACK)
+text_gravity = Planet.FONT_LST_20.render("Law of Gravitation", True, Planet.BLACK)
+text_shortcuts = Planet.FONT_LST_20.render("Keyboard Shortcuts", True, Planet.BLACK)
+text_arrow_up = Planet.FONT_LST_16.render("Up Arrow   - FPS up 5", True, Planet.BLACK)
+text_arrow_down = Planet.FONT_LST_16.render("Down Arrow - FPS down 5", True, Planet.BLACK)
+text_pause = Planet.FONT_LST_16.render("p          - Pause Toggle", True, Planet.BLACK)
+text_orbit = Planet.FONT_LST_16.render("o          - Orbit Toggle", True, Planet.BLACK)
+text_delete_sun = Planet.FONT_LST_16.render("s          - Delete Sun", True, Planet.BLACK)
+text_last_shortcut = Planet.FONT_LST_16.render("?          - Last Shortcut", True, Planet.BLACK)
+text_scaled = Planet.FONT_LST_18.render(
+    "All variables scaled accurately except visual size of the Sun and Planets ...",
+    True, Planet.YELLOW)
+
 
 # create images for visible SCREEN output
 img_background = pygame.image.load("stars.jpg").convert()
-img_newton = pygame.image.load("Newtons_Gravity_Law.png")
+img_newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 # Create Planets and Sun
 # def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
@@ -44,6 +54,8 @@ def pause():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     paused = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                paused = False
         
 
 
@@ -65,17 +77,32 @@ while run == True:
     # BLIT star background
     SCREEN.blit(img_background, (0, 0))
     
-    # BLIT Text Rectangle (DISTANCE FROM SUN)
+    # BLIT Text Rectangle (DISTANCE FROM SUN & TEXT)
     pygame.draw.rect(SCREEN, Planet.GRAY, (30,120,290,220),
                      width = 0, border_radius = 20)
     pygame.draw.rect(SCREEN, Planet.WHITE, (30,120,290,220),
-                     width = 3, border_radius = 20)    
+                     width = 3, border_radius = 20)   
     
-    # BLIT Text Rectangle (SHORTCUTS)
+    mercury.display_distance_to_sun(SCREEN, 0, 95) 
+    venus.display_distance_to_sun(SCREEN, 0, 138) 
+    earth.display_distance_to_sun(SCREEN, 0, 181) 
+    mars.display_distance_to_sun(SCREEN, 0, 223) 
+    
+    # BLIT Text Rectangle (SHORTCUTS & TEXT)
     pygame.draw.rect(SCREEN, Planet.GRAY, (30,380,290,220),
                      width = 0, border_radius = 20)
     pygame.draw.rect(SCREEN, Planet.WHITE, (30,380,290,220),
                      width = 3, border_radius = 20)  
+    
+    SCREEN.blit(text_arrow_up, (40,430))
+    SCREEN.blit(text_arrow_down, (40,458))
+    SCREEN.blit(text_pause, (40,486))
+    SCREEN.blit(text_orbit, (40,514))
+    SCREEN.blit(text_delete_sun, (40,542))
+    SCREEN.blit(text_last_shortcut, (40,570))
+    
+    pygame.display.set_caption(
+    f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
     
     # RECTANGLE (Law Of Gravitation)  
     pygame.draw.rect(SCREEN, Planet.GRAY, (30,640,290,220),
@@ -83,7 +110,7 @@ while run == True:
     pygame.draw.rect(SCREEN, Planet.WHITE, (30,640,290,220),
                      width = 3, border_radius = 20) 
     SCREEN.blit(img_newton, (35,685))   
-    
+    SCREEN.blit(text_scaled, (55, 872))
     
     # BLIT Text to Screen
     SCREEN.blit(title_text, (225, 5))
@@ -91,17 +118,34 @@ while run == True:
     SCREEN.blit(text_stats, (58,130))
     SCREEN.blit(text_shortcuts, (65,390))
     SCREEN.blit(text_gravity, (78,650))
-
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 pause()
-            if event.key == pygame.K_d:
-                pass
+            if event.key == pygame.K_DOWN:
+                fps = (fps-5) if fps>5 else fps
+            if event.key == pygame.K_UP:
+                fps += 5
             if event.key == pygame.K_o:
+                for planet in planets:
+                    planet.orbit = [(planet.x,planet.y)]
                 show_orbits = not show_orbits
+            if event.key == pygame.K_s:
+                planets.remove(sun)
+                sun = None
+            if event.key == pygame.K_x:
+                for planet in planets:
+                    if planet.name != "Sun":
+                        print(f"*** {planet.name} {planet.dts_sum_num} ***")
+                        print(planet.dts_min)
+                        print(planet.dts_avg)
+                        print(planet.dts_max)
+                        print()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pause()
 
     # planets = [sun, mercury, venus, earth, mars]
     for planet in planets:

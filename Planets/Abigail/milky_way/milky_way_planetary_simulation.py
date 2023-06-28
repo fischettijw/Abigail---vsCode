@@ -190,16 +190,16 @@ def pause():
 
 def restart():
 
-    def average_distance(plant):
+    def average_distance(planet):
         sum = 0
         max = 0
         min = 999999999999
-        for orbit in plant.orbit:
+        for orbit in planet.orbit:
             d = math.sqrt(orbit[0]**2 + orbit[1]**2)
             max = d if d >= max else max
             min = d if d <= min else min
             sum += d
-        average = sum/len(plant.orbit)
+        average = sum/len(planet.orbit)
         return max, min, average
 
     print()

@@ -1,5 +1,7 @@
 import pygame
 import math
+import collections
+
 
 pygame.init()
 
@@ -15,7 +17,7 @@ class Planet():
     EARTH_VELOCITY = 29783
     WIDTH = None
     HEIGHT = None 
-    STOP_AFTER = 1000  # trial and error
+    MAX_ORBIT_LENGTH = 1000  # trial and error
     
     # create COLORS
     WHITE = (255, 255, 255)
@@ -27,12 +29,12 @@ class Planet():
     BLACK = (0, 0, 0)    
     
     # create FONTS
-    FONT_LST_16 = pygame.font.SysFont("Lucida Sans Typewriter", 16)
-    FONT_LST_18 = pygame.font.SysFont("Lucida Sans Typewriter", 18)
-    FONT_LST_20 = pygame.font.SysFont("Lucida Sans Typewriter", 20)
-    FONT_LST_22 = pygame.font.SysFont("Lucida Sans Typewriter", 22)
-    FONT_LST_28 = pygame.font.SysFont("Lucida Sans Typewriter", 28)
-    FONT_LST_32 = pygame.font.SysFont("Lucida Sans Typewriter", 32)
+    FONT_LST_16 = pygame.font.SysFont("Courier", 16, bold = True)   # Lucida Sans Typewriter
+    FONT_LST_18 = pygame.font.SysFont("Courier", 18)
+    FONT_LST_20 = pygame.font.SysFont("Courier", 20, bold = True)
+    FONT_LST_22 = pygame.font.SysFont("Courier", 22)
+    FONT_LST_28 = pygame.font.SysFont("Courier", 28)
+    FONT_LST_32 = pygame.font.SysFont("Courier", 32)
     FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
     
 
@@ -46,7 +48,16 @@ class Planet():
 
         self.mass = mass
 
-        self.orbit = [(self.x, self.y)]
+        
+        # self.orbit = collections.deque(maxlen=Planet.MAX_ORBIT_LENGTH)
+        self.orbit = collections.deque( maxlen=Planet.MAX_ORBIT_LENGTH)
+        self.orbit.clear()
+        self.orbit.append((self.x, self.y))
+        # tup = (self.x, self.y)
+        # self.orbit.append(tup)
+
+        
+        # self.orbit = self.orbit.append((self.x, self.y))
         self.distance_to_sun = 0
 
         self.x_vel = 0
@@ -70,8 +81,9 @@ class Planet():
         self.y += self.y_vel * self.TIMESTEP
 
         # (stop after STOP_AFTER points)
-        if len(self.orbit) < Planet.STOP_AFTER:
-            self.orbit.append((self.x, self.y))   
+        # if len(self.orbit) < Planet.MAX_ORBIT_LENGTH:
+        #     self.orbit.append((self.x, self.y))
+        self.orbit.append((self.x, self.y))
             
                  
     def attraction(self, other):
@@ -108,12 +120,30 @@ class Planet():
         # draw orbits (stop after STOP_AFTER points)
         # if len(self.orbit) > 1:
         updated_points = []
+        print(len(updated_points), len(self.orbit))
+
         for point in self.orbit:
             x, y = point
             x = (x * Planet.SIZE_SCALE + Planet.WIDTH / 2) + Planet.CENTER_OFFSET_X
             y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + Planet.CENTER_OFFSET_Y
 
-            if len(updated_points) < Planet.STOP_AFTER:
-                updated_points.append((x, y))
+            # if len(updated_points) < Planet.MAX_ORBIT_LENGTH:
+            updated_points.append((x, y))
 
-        pygame.draw.lines(win, self.color, False, updated_points, 22
+        pygame.draw.lines(win, self.color, False, updated_points, 2)
+        
+    def display_distance_to_sun(self, win, x,y):
+        pygame.draw.circle(win, self.color, (60+ x,88+y), self.radius)
+    
+        if self.name == "Mercury":
+            distance_text = Planet.FONT_LST_16.render(f"{self.name}  {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
+        if self.name ==  "Venus":
+            distance_text = Planet.FONT_LST_16.render(f"{self.name}   {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
+        if self.name ==  "Earth":
+            distance_text = Planet.FONT_LST_16.render(f"{self.name}   {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
+        if self.name ==  "Mars":
+            distance_text = Planet.FONT_LST_16.render(f"{self.name}    {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
+
+        win.blit(distance_text, (x + 100, 78 + y))
+        
+    
