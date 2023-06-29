@@ -51,7 +51,7 @@ class Planet():
 
         # self.orbit = [(self.x, self.y)]
         self.orbit = collections.deque(maxlen=Planet.MAX_ORBIT_LENGTH)
-        self.orbit.clear()
+        # self.orbit.clear()
         self.orbit.append((self.x, self.y))
 
         self.distance_to_sun = math.sqrt(self.x**2 + self.y**2)
@@ -129,8 +129,10 @@ class Planet():
             y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + \
                 Planet.CENTER_OFFSET_Y
 
-            if len(updated_points) < Planet.MAX_ORBIT_LENGTH:
-                updated_points.append((x, y))
+            # if len(updated_points) < Planet.MAX_ORBIT_LENGTH:
+            #     updated_points.append((x, y))
+                
+            updated_points.append((x, y))
 
         pygame.draw.lines(win, self.color, False, updated_points, 2)
 

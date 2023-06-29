@@ -257,7 +257,7 @@ def data():
         SCREEN.fill('Red')
 
         text_title = FONT_CS_36.render(
-            f"{program_title}\n\n           Revolutions per Earth Years", True, BLACK)
+            f"{program_title}\n\n           Revolutions per Earth Year", True, BLACK)
 
         SCREEN.blit(text_title, (200, 5))
         SCREEN.blit(text_abigail, (1000, 845))
@@ -281,6 +281,9 @@ def data():
         planet_rec_text = FONT_CS_36.render(
             planet_rev[0] + "  " + str(planet_rev[1]), True, BLACK)
         SCREEN.blit(planet_rec_text, (200, 550))
+        
+        img_excel_chart_01 = pygame.image.load("Excel_Chart_01.png").convert_alpha()
+        SCREEN.blit(img_excel_chart_01, (25, 700))
 
         pygame.display.flip()
 
