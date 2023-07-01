@@ -2,7 +2,6 @@ import pygame
 import math
 import collections
 
-
 pygame.init()
 
 
@@ -34,12 +33,12 @@ class Planet():
         "Courier", 16, bold=True)   # Lucida Sans Typewriter
     FONT_LST_18 = pygame.font.SysFont("Courier", 18)
     FONT_LST_20 = pygame.font.SysFont("Courier", 20, bold=True)
-    FONT_LST_22 = pygame.font.SysFont("Courier", 22)
-    FONT_LST_28 = pygame.font.SysFont("Courier", 28)
+    FONT_LST_22 = pygame.font.SysFont("Courier", 22, bold = True)
+    FONT_LST_28 = pygame.font.SysFont("Courier", 28, bold = True)
     FONT_LST_32 = pygame.font.SysFont("Courier", 32)
     FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
 
-    def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
+    def __init__(self, name, x, y, relative_radius, color, mass, y_vel, orbital_period):
         self.name = name
         self.x = x * Planet.AU
         self.y = y * Planet.AU
@@ -49,8 +48,9 @@ class Planet():
 
         self.mass = mass
 
+        self.orbital_period = orbital_period
         # self.orbit = [(self.x, self.y)]
-        self.orbit = collections.deque(maxlen=Planet.MAX_ORBIT_LENGTH)
+        self.orbit = collections.deque(maxlen=math.ceil(self.orbital_period))
         # self.orbit.clear()
         self.orbit.append((self.x, self.y))
 
@@ -60,11 +60,16 @@ class Planet():
         self.dts_sum = 0
         self.dts_sum_num = 0
         self.dts_avg = 0
-        
 
         self.x_vel = 0
         self.y_vel = y_vel
-
+        
+    def earth_years_per_revolution(self):
+        if self.name != "sun":
+            self.time_per_revolution = abs(
+                1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
+            return self.name, self.time_per_revolution
+        
     def update_position(self, planets):
         total_fx = total_fy = 0
         for planet in planets:
@@ -79,11 +84,11 @@ class Planet():
         self.x_vel += (total_fx / self.mass) * self.TIMESTEP
         self.y_vel += (total_fy / self.mass) * self.TIMESTEP
 
-        # Distance = Vel * Time
+        # Distance = Vel * Time     (new location)
         self.x += self.x_vel * self.TIMESTEP
         self.y += self.y_vel * self.TIMESTEP
 
-        self.orbit.append((self.x, self.y))
+        self.orbit.append((self.x, self.y))     # save new location for orbit
         
         dts = math.sqrt(self.x**2 + self.y**2)
         self.dts_sum_num += 1
@@ -128,12 +133,8 @@ class Planet():
                 Planet.CENTER_OFFSET_X
             y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + \
                 Planet.CENTER_OFFSET_Y
-
-            # if len(updated_points) < Planet.MAX_ORBIT_LENGTH:
-            #     updated_points.append((x, y))
-                
             updated_points.append((x, y))
-
+        
         pygame.draw.lines(win, self.color, False, updated_points, 2)
 
     def display_distance_to_sun(self, win, x, y):
