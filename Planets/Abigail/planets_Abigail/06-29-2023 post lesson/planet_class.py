@@ -15,6 +15,7 @@ class Planet():
     CENTER_OFFSET_Y = 0
     EARTH_SIZE = 20    # Relative Radius
     EARTH_VELOCITY = 29783
+    MASS_OF_SUN = 1.98892E30
     WIDTH = None
     HEIGHT = None
     MAX_ORBIT_LENGTH = 1000  # trial and error
@@ -38,7 +39,7 @@ class Planet():
     FONT_LST_32 = pygame.font.SysFont("Courier", 32)
     FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
 
-    def __init__(self, name, x, y, relative_radius, color, mass, y_vel, orbital_period):
+    def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
         self.name = name
         self.x = x * Planet.AU
         self.y = y * Planet.AU
@@ -47,14 +48,19 @@ class Planet():
         self.color = color
 
         self.mass = mass
-
-        self.orbital_period = orbital_period
+        
+        self.distance_to_sun = math.sqrt(self.x**2 + self.y**2)
+        
+        self.orbital_period = math.sqrt((4*math.pi**2 *(self.distance_to_sun)**3) / (Planet.G * Planet.MASS_OF_SUN))/(60*60*24)
+        # print(self.name,self.orbital_period)
+        
+        
         # self.orbit = [(self.x, self.y)]
-        self.orbit = collections.deque(maxlen=math.ceil(self.orbital_period))
+        self.orbit = collections.deque(maxlen=math.ceil(int(self.orbital_period)))
         # self.orbit.clear()
         self.orbit.append((self.x, self.y))
 
-        self.distance_to_sun = math.sqrt(self.x**2 + self.y**2)
+        
         self.dts_min = 9999999999999  # minimum initial st HIGH
         self.dts_max = 0
         self.dts_sum = 0
@@ -135,7 +141,8 @@ class Planet():
                 Planet.CENTER_OFFSET_Y
             updated_points.append((x, y))
         
-        pygame.draw.lines(win, self.color, False, updated_points, 2)
+        if len(updated_points)>1:
+            pygame.draw.lines(win, self.color, False, updated_points, 2)
 
     def display_distance_to_sun(self, win, x, y):
         pygame.draw.circle(win, self.color, (60 + x, 88+y), self.radius)

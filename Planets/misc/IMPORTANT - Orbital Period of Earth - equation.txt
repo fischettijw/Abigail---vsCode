@@ -1,0 +1,34 @@
+https://www.youtube.com/watch?v=aFrItoUDA4E
+https://www.youtube.com/watch?v=UJDn6BQka8A
+
+To calculate the orbital period of a planet based on its mass (M) and its average distance from the Sun (r), you can use Kepler's third law of planetary motion. The formula is as follows:
+
+T = 2π * √(r³/GM)
+
+Where:
+T = Orbital period (in seconds)
+π = Pi (approximately 3.14159)
+G = Gravitational constant (approximately 6.67430 × 10^(-11) m³/(kg·s²))
+
+Let's assume the mass of the Earth (M) is approximately 5.972 × 10^24 kg and the average distance from the Sun (r) is approximately 149.6 million kilometers (1.496 × 10^11 meters).
+
+Plugging in these values into the formula, we can calculate the orbital period of the Earth:
+
+T = 2π * √((1.496 × 10^11)³ / (6.67430 × 10^(-11) * 5.972 × 10^24))
+
+Simplifying the equation:
+
+T = 2π * √(3.537483584 × 10^33 / 3.9909469676 × 10^14)
+
+T = 2π * √(8.8500901877 × 10^18)
+
+T ≈ 2π * 2.9731289244 × 10^9
+
+T ≈ 1.8705 × 10^10 seconds
+
+Therefore, based on the mass and average distance from the Sun, the orbital period of the Earth is approximately 1.8705 × 10^10 seconds.
+
+
+
+def __init__(self, name, x, y, relative_radius, color, mass, y_vel, orbital_period)
+earth = Planet("Earth", -1, 0, 1.0, Planet.BLUE, 5.97E24, 29783, 365.2)
