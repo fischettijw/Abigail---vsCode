@@ -16,32 +16,31 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 Planet.WIDTH = WIDTH
 Planet.HEIGHT = HEIGHT
 
-# create TEXT for visible SCREEN output
+program_title = "Newtonian Orbital Simulation of the Terrestrial Planets"
 
-program_title = "Newtonian Orbital Simulation of the Inner Planets"
-
-# create images for visible SCREEN output
+# create images
 img_background = pygame.image.load("stars.jpg").convert()
 img_newton = pygame.image.load("Newtons_Gravity_Law.png").convert_alpha()
 
 
-def reset():
-    global planets,sun,mercury,venus,earth,mars,fps,CLOCK,ticks,run,show_orbits,print_dts
-    
-    # planets = []
-    
-    sun = Planet("Sun", 0, 0, 2.5, Planet.YELLOW, 
-                    1.98892E30, 0)
-    mercury = Planet("Mercury", -0.387, 0, 0.376, Planet.DARK_GRAY, 
-                        3.30e23, 47000)
-    venus = Planet("Venus", -0.723, 0, 0.949, Planet.WHITE, 
-                    4.87E24, 35020)
-    earth = Planet("Earth", -1, 0, 1.0, Planet.BLUE, 
-                    5.97E24, 29783)
+def init_program_and_reset_variables():
+    global planets, sun, mercury, venus, earth, mars, fps, CLOCK, ticks, run, show_orbits
+
+    # Create Instances of Sun and Planets
+    # def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
+
+    sun = Planet("Sun", 0, 0, 2.5, Planet.YELLOW,
+                 1.98892E30, 0)
+    mercury = Planet("Mercury", -0.387, 0, 0.376, Planet.DARK_GRAY,
+                     3.30e23, 47400)
+    venus = Planet("Venus", -0.723, 0, 0.949, Planet.WHITE,
+                   4.87E24, 35000)
+    earth = Planet("Earth", -1, 0, 1.0, Planet.BLUE,
+                   5.97E24, 29800)
     mars = Planet("Mars", -1.524, 0, 0.533, Planet.RED,
-                    6.42E23, 24077)
+                  6.42E23, 24100)
     planets = [sun, mercury, venus, earth, mars]
-    
+
     fps = 60
     pygame.display.set_caption(
         f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
@@ -50,36 +49,9 @@ def reset():
     ticks = 0
     run = True
     show_orbits = True
-    print_dts = False
 
 
-
-# Create Instances of Sun Planets
-# def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
-
-
-sun = Planet("Sun", 0, 0, 2.5, Planet.YELLOW, 
-                1.98892E30, 0)
-mercury = Planet("Mercury", -0.387, 0, 0.376, Planet.DARK_GRAY, 
-                    3.30e23, 47000)
-venus = Planet("Venus", -0.723, 0, 0.949, Planet.WHITE, 
-                4.87E24, 35020)
-earth = Planet("Earth", -1, 0, 1.0, Planet.BLUE, 
-                5.97E24, 29783)
-mars = Planet("Mars", -1.524, 0, 0.533, Planet.RED,
-                6.42E23, 24077)
-planets = [sun, mercury, venus, earth, mars]
-
-fps = 60
-pygame.display.set_caption(
-    f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
-
-CLOCK = pygame.time.Clock()
-ticks = 0
-run = True
-show_orbits = True
-print_dts = False
-
+init_program_and_reset_variables()
 
 #################  START GAME LOOP  ###############
 while run == True:
@@ -95,24 +67,22 @@ while run == True:
     # BLIT Text Rectangle (SHORTCUTS & TEXT)
     planet_functions.text_shortcuts(SCREEN)
 
-    pygame.display.set_caption(
-        f"{program_title}      fps - {fps}      by Abigail M. Lightle      Science Fair 2023-2024")
+    # blit Image Rectangle (Law Of Gravitation)
+    planet_functions.rectangle_law_of_gravity(SCREEN, img_newton)
 
-    # RECTANGLE (Law Of Gravitation)
-    planet_functions.rectabgle_law_of_gravity(SCREEN, img_newton)
+    # BLIT Title and Nam to Screen
+    planet_functions.blit_title_and_name(SCREEN)
 
+    # BLIT Simulated Earth Years. FPS, and Caption
+    planet_functions.sim_year_years_and_fps(SCREEN, ticks, fps, program_title)
 
-    # BLIT Text to Screen
-    planet_functions.blit_text_to_screen(SCREEN)
-    
-    # sim-earth years
-    text_earth_years = Planet.FONT_LST_22.render(
-        f"sim-earth years: {ticks/365:.2f}", True, Planet.YELLOW)
-    SCREEN.blit(text_earth_years, (40, 55))
-    
-    # fps
-    text_fps = Planet.FONT_LST_28.render(f"fps - {fps}", True, Planet.YELLOW)
-    SCREEN.blit(text_fps, (105, 80))
+    # Update and Draw planet positions
+    # planets = [sun, mercury, venus, earth, mars]
+    for planet in planets:
+        planet.update_position(planets)
+        planet.draw(SCREEN)
+        if show_orbits:
+            planet.draw_orbit(SCREEN)
 
     # Event Detection
     for event in pygame.event.get():
@@ -135,14 +105,14 @@ while run == True:
                     planet.orbit.append((planet.x, planet.y))
                 show_orbits = not show_orbits
             if event.key == pygame.K_s:
-                planets.remove(sun)                
+                planets.remove(sun)
             if event.key == pygame.K_r:
                 del sun
                 del mercury
                 del venus
                 del earth
                 del mars
-                reset()             
+                init_program_and_reset_variables()
             if event.key == pygame.K_x:
                 for planet in planets:
                     if planet.name != "Sun":
@@ -155,23 +125,13 @@ while run == True:
             if event.key == pygame.K_d:
                 planet_functions.data(SCREEN, CLOCK, planets)
             if event.key == pygame.K_m:
-                print_dts = not print_dts
+                planet_functions.print_dts_min_avg_max(planets)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            planet_functions.pause()          
+            planet_functions.pause()
         if event.type == pygame.K_d:
             planet_functions.data(SCREEN, CLOCK, planets)
 
-    # planets = [sun, mercury, venus, earth, mars]
-    for planet in planets:
-        planet.update_position(planets)
-        planet.draw(SCREEN)
-        if show_orbits:
-            planet.draw_orbit(SCREEN)
-
     pygame.display.flip()
-
-    if print_dts == True and ticks % 300 == 0:
-        planet_functions.print_dts_min_avg_max(planets)
 
 #################  END GAME LOOP ###############
 

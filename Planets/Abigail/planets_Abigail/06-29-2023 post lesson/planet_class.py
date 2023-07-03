@@ -30,13 +30,13 @@ class Planet():
     BLACK = (0, 0, 0)
 
     # create FONTS
-    FONT_LST_16 = pygame.font.SysFont(
-        "Courier", 16, bold=True)   # Lucida Sans Typewriter
-    FONT_LST_18 = pygame.font.SysFont("Courier", 18)
-    FONT_LST_20 = pygame.font.SysFont("Courier", 20, bold=True)
-    FONT_LST_22 = pygame.font.SysFont("Courier", 22, bold = True)
-    FONT_LST_28 = pygame.font.SysFont("Courier", 28, bold = True)
-    FONT_LST_32 = pygame.font.SysFont("Courier", 32)
+    FONT_COURIER_16 = pygame.font.SysFont(
+        "Courier", 16, bold=True)
+    FONT_COURIER_18 = pygame.font.SysFont("Courier", 18)
+    FONT_COURIER_20 = pygame.font.SysFont("Courier", 20, bold=True)
+    FONT_COURIER_22 = pygame.font.SysFont("Courier", 22, bold=True)
+    FONT_COURIER_28 = pygame.font.SysFont("Courier", 28, bold=True)
+    FONT_COURIER_32 = pygame.font.SysFont("Courier", 32)
     FONT_CS_36 = pygame.font.SysFont("comicsans", 36)
 
     def __init__(self, name, x, y, relative_radius, color, mass, y_vel):
@@ -48,19 +48,19 @@ class Planet():
         self.color = color
 
         self.mass = mass
-        
+
         self.distance_to_sun = math.sqrt(self.x**2 + self.y**2)
-        
-        self.orbital_period = math.sqrt((4*math.pi**2 *(self.distance_to_sun)**3) / (Planet.G * Planet.MASS_OF_SUN))/(60*60*24)
+
+        self.orbital_period = math.sqrt(
+            (4*math.pi**2 * (self.distance_to_sun)**3) / (Planet.G * Planet.MASS_OF_SUN))/(60*60*24)
         # print(self.name,self.orbital_period)
-        
-        
+
         # self.orbit = [(self.x, self.y)]
-        self.orbit = collections.deque(maxlen=math.ceil(int(self.orbital_period)))
+        self.orbit = collections.deque(
+            maxlen=math.ceil(int(self.orbital_period)))
         # self.orbit.clear()
         self.orbit.append((self.x, self.y))
 
-        
         self.dts_min = 9999999999999  # minimum initial st HIGH
         self.dts_max = 0
         self.dts_sum = 0
@@ -69,13 +69,13 @@ class Planet():
 
         self.x_vel = 0
         self.y_vel = y_vel
-        
+
     def earth_years_per_revolution(self):
         if self.name != "sun":
             self.time_per_revolution = abs(
                 1/(self.x/Planet.AU/self.y_vel*Planet.EARTH_VELOCITY))
             return self.name, self.time_per_revolution
-        
+
     def update_position(self, planets):
         total_fx = total_fy = 0
         for planet in planets:
@@ -95,7 +95,7 @@ class Planet():
         self.y += self.y_vel * self.TIMESTEP
 
         self.orbit.append((self.x, self.y))     # save new location for orbit
-        
+
         dts = math.sqrt(self.x**2 + self.y**2)
         self.dts_sum_num += 1
         self.dts_min = int(dts if dts < self.dts_min else self.dts_min)
@@ -126,7 +126,7 @@ class Planet():
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
         # Place names on Planets & Sun
-        planet_text = Planet.FONT_LST_16.render(self.name, 1, Planet.WHITE)
+        planet_text = Planet.FONT_COURIER_16.render(self.name, 1, Planet.WHITE)
         below = 1.25 if self.name == "Sun" else 2.0
         win.blit(planet_text, (x - planet_text.get_width()/2,
                                y - planet_text.get_height()/2 + below * self.radius))
@@ -140,24 +140,24 @@ class Planet():
             y = (y * Planet.SIZE_SCALE + Planet.HEIGHT / 2) + \
                 Planet.CENTER_OFFSET_Y
             updated_points.append((x, y))
-        
-        if len(updated_points)>1:
+
+        if len(updated_points) > 1:
             pygame.draw.lines(win, self.color, False, updated_points, 2)
 
     def display_distance_to_sun(self, win, x, y):
         pygame.draw.circle(win, self.color, (60 + x, 88+y), self.radius)
 
         if self.name == "Mercury":
-            distance_text = Planet.FONT_LST_16.render(
+            distance_text = Planet.FONT_COURIER_16.render(
                 f"{self.name}  {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
         if self.name == "Venus":
-            distance_text = Planet.FONT_LST_16.render(
+            distance_text = Planet.FONT_COURIER_16.render(
                 f"{self.name}   {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
         if self.name == "Earth":
-            distance_text = Planet.FONT_LST_16.render(
+            distance_text = Planet.FONT_COURIER_16.render(
                 f"{self.name}   {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
         if self.name == "Mars":
-            distance_text = Planet.FONT_LST_16.render(
+            distance_text = Planet.FONT_COURIER_16.render(
                 f"{self.name}    {math.floor(self.distance_to_sun/1000)} km", True, Planet.BLACK)
 
         win.blit(distance_text, (x + 100, 78 + y))
