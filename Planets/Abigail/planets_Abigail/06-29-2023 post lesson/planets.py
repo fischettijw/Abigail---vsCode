@@ -40,6 +40,7 @@ def init_program_and_reset_variables():
     mars = Planet("Mars", -1.524, 0, 0.533, Planet.RED,
                   6.42E23, 24100)
     planets = [sun, mercury, venus, earth, mars]
+    
 
     fps = 60
     pygame.display.set_caption(
