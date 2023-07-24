@@ -5,7 +5,7 @@ import math
 from planet_class import Planet
 import collections
 import planet_functions
-import planet_global_variables
+# import planet_global_variables
 
 os.system('cls')
 
@@ -89,6 +89,10 @@ while run == True:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_v:
+                # venus.y_vel *= 1.2
+                venus.x_vel *= 1.2
+                venus.color = "violet"
             if event.key == pygame.K_p:
                 planet_functions.pause()
             if event.key == pygame.K_DOWN:
@@ -130,6 +134,7 @@ while run == True:
             planet_functions.pause()
         if event.type == pygame.K_d:
             planet_functions.data(SCREEN, CLOCK, planets)
+
 
     pygame.display.flip()
 
